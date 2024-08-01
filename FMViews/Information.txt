@@ -1,0 +1,21 @@
+Here are the views that you will need in order to input data into this system
+There are two different views, one for the squad screen and one for the scouting screen
+You will need to import these views into your game
+
+In order to import the views : 
+- Select the current views
+- Hover over custom and select import views
+- You will then need to select the appropriate view for that screen
+
+To get the information from the page, you will need to print the page to a web page
+This is done through the steps below : 
+
+- Select the correct view
+- Use CTRL+A (or CMD+A) on an empty part of the page
+- Then use CTRL+P (or CMD+P)
+- Finally, select Web Page and Ok
+
+Alternatively, you could select print screen in the settings menu
+
+You will need to store the generated file in the FMData folder with this application
+- This is so that the application knows what data you are trying to analyse
