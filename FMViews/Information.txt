@@ -13,7 +13,7 @@ This is done through the steps below :
 - Select the correct view
 - Use CTRL+A (or CMD+A) on an empty part of the page
 - Then use CTRL+P (or CMD+P)
-- Finally, select Web Page and Ok
+- Finally, select Test File and Ok
 
 Alternatively, you could select print screen in the settings menu
 
