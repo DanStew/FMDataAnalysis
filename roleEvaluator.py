@@ -7,39 +7,41 @@ import sys
 def readFile():
     # Finding the lastest file made in your data file
     def findFile():
-        #Finding out what way they would like to input their data
+        # Finding out what way they would like to input their data
         choice = ""
-        #Repeating until a valid input is given
-        while (choice != "LATEST" and choice != "INPUT"):
-            print("Would you like to choose the latest file in FMData or input the file name yourself?")
+        # Repeating until a valid input is given
+        while choice != "LATEST" and choice != "INPUT":
+            print(
+                "Would you like to choose the latest file in FMData or input the file name yourself?"
+            )
             choice = input("Please enter LATEST or INPUT... : ").upper()
-        if (choice == "LATEST"):
+        if choice == "LATEST":
             list_of_files = glob.glob(
                 "./FMData/*"
             )  # * means all if need specific format then *.csv
             latest_file = max(list_of_files, key=os.path.getctime)
             return latest_file
-        else: 
+        else:
             acceptedFile = False
             while acceptedFile == False:
                 try:
-                    #Getting the file from the user
-                    inputFile = input("Please enter the file name and its extension (should be .rtf), or QUIT to exit the program : ")
-                    #Seeing if the user wants to Quit
-                    if (inputFile == "QUIT"):
+                    # Getting the file from the user
+                    inputFile = input(
+                        "Please enter the file name and its extension (should be .rtf), or QUIT to exit the program : "
+                    )
+                    # Seeing if the user wants to Quit
+                    if inputFile == "QUIT":
                         return inputFile
-                    #Finding the location of inputted file
+                    # Finding the location of inputted file
                     cur_path = os.path.dirname(__file__)
-                    new_path = os.path.relpath('.\\FMData\\' + inputFile, cur_path)
-                    #Seeing if the inputted file exists
+                    new_path = os.path.relpath(".\\FMData\\" + inputFile, cur_path)
+                    # Seeing if the inputted file exists
                     testOpen = open(new_path, encoding="utf8")
                     acceptedFile = True
                     return new_path
-                #If inputted file doesn't exist, return error and repeat
+                # If inputted file doesn't exist, return error and repeat
                 except:
                     print("This file name cannot be found within the FMData folder")
-                
-
 
     # Applying the formatting for each line within the file, to return the attributes
     def formatLine(line):
@@ -54,8 +56,8 @@ def readFile():
 
     # Opening the latest file made in your data file - using findFile()
     fileName = findFile()
-    #Seeing if the user enterred that they would like to quit
-    if (fileName == "QUIT"):
+    # Seeing if the user enterred that they would like to quit
+    if fileName == "QUIT":
         return "QUIT"
     file = open(fileName, encoding="utf8")
     # Formatting the files data
@@ -229,8 +231,123 @@ def createPlayerScores(playerInfos, playerAttributes):
         # Generating a score for every role in the game
         if i == 0:
             continue
-        
+        try:
+            # Finding the location of Attribute Rankings file file
+            cur_path = os.path.dirname(__file__)
+            new_path = os.path.relpath(
+                ".\\AttributeRankings\\currentAttributeRankings.txt", cur_path
+            )
+            # Opening the file
+            attributeRankings = open(new_path, encoding="utf8")
+            for line in attributeRankings:
+                # Breaking the line down into two parts
+                lineInfo = line.strip().split(" : ")
+                # Finding out what number we need to divide by and creating array of int values
+                count = 0
+                attMults = []
+                for nmb in lineInfo[1]:
+                    count += int(nmb)
+                    attMults.append(int(nmb))
+                # Seeing if we are looking at a goalKeeper role
+                if "K" in lineInfo[0]:
+                    playerInfo[lineInfo[0]] = round(
+                        (
+                            (
+                                playerAttributes["Aerial Reach"] * attMults[0]
+                                + playerAttributes["Command Of Area"] * attMults[1]
+                                + playerAttributes["Communication"] * attMults[2]
+                                + playerAttributes["Eccentricity"] * attMults[3]
+                                + playerAttributes["First Touch"] * attMults[4]
+                                + playerAttributes["Handling"] * attMults[5]
+                                + playerAttributes["Kicking"] * attMults[6]
+                                + playerAttributes["One On Ones"] * attMults[7]
+                                + playerAttributes["Passing"] * attMults[8]
+                                + playerAttributes["Punching"] * attMults[9]
+                                + playerAttributes["Reflexes"] * attMults[10]
+                                + playerAttributes["Rushing Out"] * attMults[11]
+                                + playerAttributes["Throwing"] * attMults[12]
+                                + playerAttributes["Aggression"] * attMults[13]
+                                + playerAttributes["Anticipation"] * attMults[14]
+                                + playerAttributes["Bravery"] * attMults[15]
+                                + playerAttributes["Composure"] * attMults[16]
+                                + playerAttributes["Concentration"] * attMults[17]
+                                + playerAttributes["Decisions"] * attMults[18]
+                                + playerAttributes["Determination"] * attMults[19]
+                                + playerAttributes["Flair"] * attMults[20]
+                                + playerAttributes["Leadership"] * attMults[21]
+                                + playerAttributes["Off The Ball"] * attMults[22]
+                                + playerAttributes["Positioning"] * attMults[23]
+                                + playerAttributes["Teamwork"] * attMults[24]
+                                + playerAttributes["Vision"] * attMults[25]
+                                + playerAttributes["Work Rate"] * attMults[26]
+                                + playerAttributes["Acceleration"] * attMults[27]
+                                + playerAttributes["Agility"] * attMults[28]
+                                + playerAttributes["Balance"] * attMults[29]
+                                + playerAttributes["Jumping Reach"] * attMults[30]
+                                + playerAttributes["Natural Fitness"] * attMults[31]
+                                + playerAttributes["Pace"] * attMults[32]
+                                + playerAttributes["Stamina"] * attMults[33]
+                                + playerAttributes["Strength"] * attMults[34]
+                            )
+                            / count
+                        )
+                        * 5,
+                        1,
+                    )
+                else:
+                    playerInfo[lineInfo[0]] = round(
+                        (
+                            (
+                                playerAttributes["Corners"] * attMults[0]
+                                + playerAttributes["Crossing"] * attMults[1]
+                                + playerAttributes["Dribbling"] * attMults[2]
+                                + playerAttributes["Finishing"] * attMults[3]
+                                + playerAttributes["First Touch"] * attMults[4]
+                                + playerAttributes["Free Kicks"] * attMults[5]
+                                + playerAttributes["Heading"] * attMults[6]
+                                + playerAttributes["Long Shots"] * attMults[7]
+                                + playerAttributes["Long Throws"] * attMults[8]
+                                + playerAttributes["Marking"] * attMults[9]
+                                + playerAttributes["Passing"] * attMults[10]
+                                + playerAttributes["Penalty Taking"] * attMults[11]
+                                + playerAttributes["Tackling"] * attMults[12]
+                                + playerAttributes["Technique"] * attMults[13]
+                                + playerAttributes["Aggression"] * attMults[14]
+                                + playerAttributes["Anticipation"] * attMults[15]
+                                + playerAttributes["Bravery"] * attMults[16]
+                                + playerAttributes["Composure"] * attMults[17]
+                                + playerAttributes["Concentration"] * attMults[18]
+                                + playerAttributes["Decisions"] * attMults[19]
+                                + playerAttributes["Determination"] * attMults[20]
+                                + playerAttributes["Flair"] * attMults[21]
+                                + playerAttributes["Leadership"] * attMults[22]
+                                + playerAttributes["Off The Ball"] * attMults[23]
+                                + playerAttributes["Positioning"] * attMults[24]
+                                + playerAttributes["Teamwork"] * attMults[25]
+                                + playerAttributes["Vision"] * attMults[26]
+                                + playerAttributes["Work Rate"] * attMults[27]
+                                + playerAttributes["Acceleration"] * attMults[28]
+                                + playerAttributes["Agility"] * attMults[29]
+                                + playerAttributes["Balance"] * attMults[30]
+                                + playerAttributes["Jumping Reach"] * attMults[31]
+                                + playerAttributes["Natural Fitness"] * attMults[32]
+                                + playerAttributes["Pace"] * attMults[33]
+                                + playerAttributes["Stamina"] * attMults[34]
+                                + playerAttributes["Strength"] * attMults[35]
+                            )
+                            / count
+                        )
+                        * 5,
+                        1,
+                    )
+        except:
+            print(
+                "CurrentAttributeRankings file couldn't be found in folder AttributeRankings"
+            )
+            print("PROGRAM EXITING...")
+            sys.exit()
     return playerInfos
+
 
 # Reading the file from the user
 fileData = readFile()
@@ -238,28 +355,13 @@ if fileData == "QUIT":
     print("User has decided to exit the program")
     print("PROGRAM EXITING...")
     sys.exit()
-#Removing any of the maksed values
+# Removing any of the maksed values
 userAnswers = askUserQuestions()
-fileData = removeMaskedAttributes(fileData,userAnswers)
+fileData = removeMaskedAttributes(fileData, userAnswers)
 # Creating player dictionaries, using the read information
 playerInfos = createPlayerInfo(fileData)
 playerAttributes = createPlayerAttributes(fileData)
 # Creating the player scores
 playerInfos = createPlayerScores(playerInfos, playerAttributes)
-for player in playerInfos: 
-    if player["Name"] == "Pedro Porro":
-        print(player["CWB"])
-        print(player["WB-D"])
-        print(player["WB-S"])
-        print(player["WB-A"])
-        print(player["WB-Au"])
-        print(player["IWB-D"])
-        print(player["IWB-S"])
-        print(player["IWB-A"])
-        print(player["IWB-Au"])
-        print(player["IFB-D"])
-        print(player["FB-D"])
-        print(player["FB-S"])
-        print(player["FB-A"])
-        print(player["FB-Au"])
-        print(player["NNFB-D"])
+for playerInfo in playerInfos:
+    print(playerInfo)
