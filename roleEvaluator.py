@@ -1,109 +1,316 @@
 import glob
 import os
 
-#Function to find and read the latest file from FMData
+
+# Function to find and read the latest file from FMData
 def readFile():
-    #Finding the lastest file made in your data file
+    # Finding the lastest file made in your data file
     def findFile():
-        list_of_files = glob.glob('./FMData/*') # * means all if need specific format then *.csv
+        list_of_files = glob.glob(
+            "./FMData/*"
+        )  # * means all if need specific format then *.csv
         latest_file = max(list_of_files, key=os.path.getctime)
         return latest_file
-    
-    #Applying the formatting for each line within the file, to return the attributes
+
+    # Applying the formatting for each line within the file, to return the attributes
     def formatLine(line):
-        tempData = line.split("|") #Spltting the data into the individual columns
+        tempData = line.split("|")  # Spltting the data into the individual columns
         lineData = []
         for item in tempData:
-            item = item.strip() #Removing the whitespace
-            lineData.append(item) #Adding the items to an array for the players information
+            item = item.strip()  # Removing the whitespace
+            lineData.append(
+                item
+            )  # Adding the items to an array for the players information
         return lineData
-    
-    #Opening the latest file made in your data file - using findFile()
-    file = open(findFile(),"r")
-    #Formatting the files data
+
+    # Opening the latest file made in your data file - using findFile()
+    file = open(findFile(), encoding="utf8")
+    # Formatting the files data
     fileData = []
-    for i,line in enumerate(file):
-        #Cutting out all the filler lines, eg "| ------- | "
-        if i%2 == 1:
+    for i, line in enumerate(file):
+        # Cutting out all the filler lines, eg "| ------- | "
+        if i % 2 == 1:
             continue
-        lineData = formatLine(line) #Formatting the line to return array of information
-        lineData = lineData[1:] #Eliminating first item (Always empty)
-        lineData = lineData[:-1] #Eliminating last item from the array (This is always empty)
+        lineData = formatLine(
+            line
+        )  # Formatting the line to return array of information
+        lineData = lineData[2:]  # Eliminating first item (Always empty)
+        lineData = lineData[
+            :-1
+        ]  # Eliminating last item from the array (This is always empty)
         if lineData != []:
-            fileData.append(lineData) #Adding player information to overall data array
+            if lineData[1] == "":
+                continue
+            fileData.append(lineData)  # Adding player information to overall data array
+    # Removing the first element from the file data
+    fileData = fileData[1:]
     return fileData
 
-#Function to create an array of player dictionaries, using the array of player arrays that have been previously made
-def createPlayerDicts(fileData):
-    #Creating array to store all the dictionaries
+
+# Function to create an array of player dictionaires containing all of the key information about that player
+def createPlayerInfo(fileData):
+    playerInfos = []
+    for player in fileData:
+        # Creating the dictionary
+        playerInfo = dict()
+        playerInfo["Information"] = player[0]
+        playerInfo["Name"] = player[1]
+        playerInfo["Position"] = player[2]
+        playerInfo["Club"] = player[3]
+        playerInfo["Nationality"] = player[4]
+        playerInfo["Age"] = int(player[5])
+        playerInfo["TransferValue"] = player[6]
+        playerInfo["Wage"] = player[7]
+        playerInfo["Right Foot"] = player[8]
+        playerInfo["Left Foot"] = player[9]
+        # Appending the dictionary to the array
+        playerInfos.append(playerInfo)
+    return playerInfos
+
+
+# Function to remove any masked attributes there are
+def removeMaskedAttributes(fileData, userAnswers):
+    # Making a copy of fileData
+    tempData = []
+    # Looping through all the attributes we are concerned with
+    for i, player in enumerate(fileData):
+        tempPlayer = []
+        addPlayer = True
+        for j, attribute in enumerate(player):
+            # Seeing if a - is contained within the attribute
+            if "-" in attribute and j > 9:
+                # Getting the two values
+                attributeValues = attribute.split("-")
+                # If attributeValues[0] if "", the player hasn't been fully scouted
+                # Therefore, user will be asked whether they want to continue
+                if attributeValues[0] == "":
+                    # If the user chose replace, set the attribute value to the replace value
+                    if userAnswers[0] == "REPLACE":
+                        attribute = userAnswers[1]
+                    else:
+                        addPlayer = False
+                        break
+                else:
+                    # Making an average of the two masked values
+                    attribute = round(
+                        (int(attributeValues[0]) + int(attributeValues[1])) / 2
+                    )
+            # Appending the attribute to the new tempPlayer array
+            tempPlayer.append(attribute)
+        # Appending the tempPlayer to the tempData array
+        if addPlayer == True:
+            tempData.append(tempPlayer)
+    return tempData
+
+
+# Asking user some questions about what they would like to do in certain situations
+def askUserQuestions():
+    # Seeing what the user would like to do with the value
+    print("If a Player has been found with empty attribute values")
+    print(
+        "Would you like to replace empty attributes with a value or remove the player"
+    )
+    userInput = ""
+    while userInput != "REPLACE" and userInput != "REMOVE":
+        userInput = input("Please enter REPLACE or REMOVE... : ").upper()
+    if userInput == "REPLACE":
+        attributeAccepted = False
+        while not attributeAccepted:
+            try:
+                attributeAvg = round(
+                    float(input("Enter the value you would like to replace it with")), 1
+                )
+                attributeAccepted = True
+            except:
+                print("Enterred value must be of type float")
+        # Returning the users option and value
+        return ["REPLACE", attributeAvg]
+    # If the user chose to remove the player
+    else:
+        return ["REMOVE"]
+
+
+# Function to create an array of player dictionaries containing all of the attributes from that player
+def createPlayerAttributes(fileData):
+    # Creating array to store all the dictionaries
     playerDicts = []
-    for player in fileData : 
-        #Creating the player dictionary
+    for player in fileData:
+        # Creating the player dictionary
         playerDict = dict()
-        playerDict["Information"] = player[1]
-        playerDict["Name"] = player[2]
-        playerDict["Position"] = player[3]
-        playerDict["Club"] = player[4]
-        playerDict["Nationality"] = player[5]
-        playerDict["Age"] = player[6]
-        playerDict["TransferValue"] = player[7]
-        playerDict["Wage"] = player[8]
-        playerDict["Right Foot"] = player[9]
-        playerDict["Left Foot"] = player[10]
-        playerDict["Corners"] = player[11]
-        playerDict["Crossing"] = player[12]
-        playerDict["Dribbling"] = player[13]
-        playerDict["Finishing"] = player[14]
-        playerDict["First Touch"] = player[15]
-        playerDict["Free Kicks"] = player[16]
-        playerDict["Heading"] = player[17]
-        playerDict["Long Shots"] =  player[18]
-        playerDict["Long Throws"] = player[19]
-        playerDict["Marking"] = player[20]
-        playerDict["Passing"] = player[21]
-        playerDict["Penalty Taking"] = player[22]
-        playerDict["Tackling"] = player[23]
-        playerDict["Technique"] = player[24]
-        playerDict["Aggression"] = player[25]
-        playerDict["Anticipation"] = player[26]
-        playerDict["Bravery"] = player[27]
-        playerDict["Composure"] = player[28]
-        playerDict["Concentration"] = player[29]
-        playerDict["Decisions"] = player[30]
-        playerDict["Determination"] = player[31]
-        playerDict["Flair"] = player[32]
-        playerDict["Leadership"] = player[33]
-        playerDict["Off The Ball"] = player[34]
-        playerDict["Positioning"] = player[35]
-        playerDict["Teamwork"] = player[36]
-        playerDict["Vision"] = player[37]
-        playerDict["Work Rate"] = player[38]
-        playerDict["Acceleration"] = player[39]
-        playerDict["Agility"] = player[40]
-        playerDict["Balance"] = player[41]
-        playerDict["Jumping"] = player[42]
-        playerDict["Natural Fitness"] = player[43]
-        playerDict["Pace"] = player[44]
-        playerDict["Stamina"] = player[45]
-        playerDict["Strength"] = player[46]
-        playerDict["Aerial Reach"] = player[47]
-        playerDict["Command Of Area"] = player[48]
-        playerDict["Communication"] = player[49]
-        playerDict["Eccentricity"] = player[50]
-        playerDict["Handling"] = player[51]
-        playerDict["Kicking"] = player[52]
-        playerDict["1v1"] = player[53]
-        playerDict["Punching"] = player[54]
-        playerDict["Reflexes"] = player[55]
-        playerDict["Rushing Out"] = player[56]
-        playerDict["Throwing"] = player[57]
-        #Appending the dictionary to the array
+        playerDict["Corners"] = int(player[10])
+        playerDict["Crossing"] = int(player[11])
+        playerDict["Dribbling"] = int(player[12])
+        playerDict["Finishing"] = int(player[13])
+        playerDict["First Touch"] = int(player[14])
+        playerDict["Free Kicks"] = int(player[15])
+        playerDict["Heading"] = int(player[16])
+        playerDict["Long Shots"] = int(player[17])
+        playerDict["Long Throws"] = int(player[18])
+        playerDict["Marking"] = int(player[19])
+        playerDict["Passing"] = int(player[20])
+        playerDict["Penalty Taking"] = int(player[21])
+        playerDict["Tackling"] = int(player[22])
+        playerDict["Technique"] = int(player[23])
+        playerDict["Aggression"] = int(player[24])
+        playerDict["Anticipation"] = int(player[25])
+        playerDict["Bravery"] = int(player[26])
+        playerDict["Composure"] = int(player[26])
+        playerDict["Concentration"] = int(player[28])
+        playerDict["Decisions"] = int(player[29])
+        playerDict["Determination"] = int(player[30])
+        playerDict["Flair"] = int(player[31])
+        playerDict["Leadership"] = int(player[32])
+        playerDict["Off The Ball"] = int(player[33])
+        playerDict["Positioning"] = int(player[34])
+        playerDict["Teamwork"] = int(player[35])
+        playerDict["Vision"] = int(player[36])
+        playerDict["Work Rate"] = int(player[37])
+        playerDict["Acceleration"] = int(player[38])
+        playerDict["Agility"] = int(player[39])
+        playerDict["Balance"] = int(player[40])
+        playerDict["Jumping"] = int(player[41])
+        playerDict["Natural Fitness"] = int(player[42])
+        playerDict["Pace"] = int(player[43])
+        playerDict["Stamina"] = int(player[44])
+        playerDict["Strength"] = int(player[45])
+        playerDict["Aerial Reach"] = int(player[46])
+        playerDict["Command Of Area"] = int(player[47])
+        playerDict["Communication"] = int(player[48])
+        playerDict["Eccentricity"] = int(player[49])
+        playerDict["Handling"] = int(player[50])
+        playerDict["Kicking"] = int(player[51])
+        playerDict["1v1"] = int(player[52])
+        playerDict["Punching"] = int(player[53])
+        playerDict["Reflexes"] = int(player[54])
+        playerDict["Rushing Out"] = int(player[55])
+        playerDict["Throwing"] = int(player[56])
+        # Appending the dictionary to the array
         playerDicts.append(playerDict)
     return playerDicts
-    
 
+
+# Function which generates the player scores, for every player
+def createPlayerScores(playerInfos, playerAttributes):
+    # Looping through every player
+    for i, playerInfo in enumerate(playerInfos):
+        # Generating a score for every role in the game
+        if i == 0:
+            continue
+        playerInfo = generateGoalKeeperScores(playerInfos[i], playerAttributes[i])
+        playerInfo = generateFullBackScores(playerInfos[i], playerAttributes[i])
+        playerInfo = generateCentreBackScores(playerInfos[i], playerAttributes[i])
+        playerInfo = generateMidfielderScores(playerInfos[i], playerAttributes[i])
+        playerInfo = generateWingerScores(playerInfos[i], playerAttributes[i])
+        playerInfo = generateCAMScores(playerInfos[i], playerAttributes[i])
+        playerInfo = generateStrikerScores(playerInfos[i], playerAttributes[i])
+    return playerInfos
+
+
+# Function to generate the scores for Goal Keepers :
+def generateGoalKeeperScores(playerInfo, playerAttributes):
+    pass
+
+
+# Function to generate the scores for Full Backs :
+def generateFullBackScores(playerInfo, playerAttributes):
+    # Generating the players key attributes value
+    # This is calculated here as it will be the same for all roles here
+    keyAttScore = (
+        playerAttributes["Acceleration"] * 5
+        + playerAttributes["Work Rate"] * 5
+        + playerAttributes["Pace"] * 5
+        + playerAttributes["Stamina"] * 5
+    )
+    # Generating the individual scores for each role
+    playerInfo["CWB"] = round(
+        (keyAttScore+ (playerAttributes["Crossing"] * 3)+ (playerAttributes["Dribbling"] * 3)
+        + (playerAttributes["Technique"] * 3)+ (playerAttributes["Off The Ball"] * 3)+ (playerAttributes["Teamwork"] * 3)
+        + (playerAttributes["First Touch"] * 1)+ (playerAttributes["Marking"] * 1)+ (playerAttributes["Passing"] * 1)
+        + (playerAttributes["Tackling"] * 1)+ (playerAttributes["Anticipation"] * 1)+ (playerAttributes["Decisions"] * 1)
+        + (playerAttributes["Flair"] * 1)+ (playerAttributes["Positioning"] * 1)+ (playerAttributes["Agility"] * 1)
+        + (playerAttributes["Balance"] * 1))/ 9,1)
+    playerInfo["WB-D"] = round(
+        (keyAttScore + playerAttributes["Marking"] * 3 + playerAttributes["Tackling"] * 3 + 
+         playerAttributes["Anticipation"] * 3 + playerAttributes["Positioning"] * 3 + playerAttributes["Teamwork"] * 3 + 
+         playerAttributes["Crossing"] * 1 + playerAttributes["Dribbling"] * 1 + playerAttributes["First Touch"] * 1 + 
+         playerAttributes["Passing"] * 1 + playerAttributes["Technique"] * 1 + playerAttributes["Concentration"] * 1 + 
+         playerAttributes["Decisions"] * 1 + playerAttributes["Off The Ball"] * 1 + playerAttributes["Agility"] * 1 + 
+         playerAttributes["Balance"] * 1) / 9,1)
+    playerInfo["WB-S"] = round(
+        ((keyAttScore + playerAttributes["Marking"] * 3 + playerAttributes["Tackling"] * 3 + 
+         playerAttributes["Anticipation"] * 1 + playerAttributes["Positioning"] * 1 + playerAttributes["Teamwork"] * 3 + 
+         playerAttributes["Crossing"] * 3 + playerAttributes["Dribbling"] * 3 + playerAttributes["First Touch"] * 1 + 
+         playerAttributes["Passing"] * 1 + playerAttributes["Technique"] * 1 + playerAttributes["Concentration"] * 1 + 
+         playerAttributes["Decisions"] * 1 + playerAttributes["Off The Ball"] * 3 + playerAttributes["Agility"] * 1 + 
+         playerAttributes["Balance"] * 1) / 47) * 5,1)
+    playerInfo["WB-A"] = round(
+        ((keyAttScore + playerAttributes["Marking"] * 1 + playerAttributes["Tackling"] * 3 + 
+         playerAttributes["Anticipation"] * 1 + playerAttributes["Positioning"] * 1 + playerAttributes["Teamwork"] * 3 + 
+         playerAttributes["Crossing"] * 3 + playerAttributes["Dribbling"] * 3 + playerAttributes["First Touch"] * 1 + 
+         playerAttributes["Passing"] * 1 + playerAttributes["Technique"] * 3 + playerAttributes["Concentration"] * 1 + 
+         playerAttributes["Decisions"] * 1 + playerAttributes["Off The Ball"] * 3 + playerAttributes["Agility"] * 1 + 
+         playerAttributes["Balance"] * 1 + playerAttributes["Flair"] * 1) / 48) * 5,1)
+    playerInfo["WB-Au"] = round(
+        ((keyAttScore + playerAttributes["Marking"] * 3 + playerAttributes["Tackling"] * 3 + 
+         playerAttributes["Anticipation"] * 1 + playerAttributes["Positioning"] * 1 + playerAttributes["Teamwork"] * 3 + 
+         playerAttributes["Crossing"] * 3 + playerAttributes["Dribbling"] * 3 + playerAttributes["First Touch"] * 1 + 
+         playerAttributes["Passing"] * 1 + playerAttributes["Technique"] * 1 + playerAttributes["Concentration"] * 1 + 
+         playerAttributes["Decisions"] * 1 + playerAttributes["Off The Ball"] * 3 + playerAttributes["Agility"] * 1 + 
+         playerAttributes["Balance"] * 1) / 47) * 5,1)
+    playerInfo["IWB-D"] = round(
+        (keyAttScore + playerAttributes["Passing"] * 3 + playerAttributes["Tackling"] * 3 + 
+          playerAttributes["Anticipation"] * 3 + playerAttributes["Decisions"] * 3 + playerAttributes["Positioning"] * 3 + 
+          playerAttributes["Teamwork"] * 3 +  playerAttributes["First Touch"] * 1 +  playerAttributes["Marking"] * 1 +  
+          playerAttributes["Technique"] * 1 +  playerAttributes["Composure"] * 1 +  playerAttributes["Concentration"] * 1 +  
+          playerAttributes["Off The Ball"] * 1 +  playerAttributes["Agility"] * 1) / 9,1)
+    # Returning the player info dict back to the system
+    return playerInfo
+
+
+# Function to generate the scores for Centre Backs :
+def generateCentreBackScores(playerInfo, playerAttributes):
+    pass
+
+
+# Function to generate the scores for Midfielders (CM and CDM) :
+def generateMidfielderScores(playerInfo, playerAttributes):
+    pass
+
+
+# Function to generate the scores for Wingers :
+def generateWingerScores(playerInfo, playerAttributes):
+    pass
+
+
+# Function to generate the scores for CAMs :
+def generateCAMScores(playerInfo, playerAttributes):
+    pass
+
+
+# Function to generate the scores for Wingers :
+def generateWingerScores(playerInfo, playerAttributes):
+    pass
+
+
+# Function to generate the scores for Strikers :
+def generateStrikerScores(playerInfo, playerAttributes):
+    pass
+
+# Reading the file from the user
 fileData = readFile()
-playerDicts = createPlayerDicts(fileData)
-for player in playerDicts : 
-    if (player["Name"] == "Callum Lang"):
-        print(player["Long Throws"])
+#Removing any of the maksed values
+userAnswers = askUserQuestions()
+fileData = removeMaskedAttributes(fileData,userAnswers)
+# Creating player dictionaries, using the read information
+playerInfos = createPlayerInfo(fileData)
+playerAttributes = createPlayerAttributes(fileData)
+# Creating the player scores
+playerInfos = createPlayerScores(playerInfos, playerAttributes)
+for player in playerInfos: 
+    if player["Name"] == "Aaron Ramsdale":
+        print(player["CWB"])
+        print(player["WB-D"])
+        print(player["WB-S"])
+        print(player["WB-A"])
+        print(player["WB-Au"])
+        print(player["IWB-D"])
