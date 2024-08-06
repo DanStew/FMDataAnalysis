@@ -1,0 +1,9 @@
+Within this file, are the attribute rankings for the different roles
+The attribute rankings are how each roles is scored, in order to create the different player scores
+The defaultAttributeRankings text stores all the default attribute rankings that are used by the system
+The currentAttributeRankings file contains all the current attribute rankings, which will be used in calculations
+
+NOTE : I would advise leaving the defaultAttributeRankings file alone, however it can be redownloaded later
+
+Changes can be directly made to the currentAttributeRankings file, alternatively you can change it using the CLI or GUI
+The currentAttributeRankings can be reverted back to the default values through the CLI and GUI aswell

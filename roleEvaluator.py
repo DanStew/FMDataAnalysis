@@ -1,16 +1,45 @@
 import glob
 import os
+import sys
 
 
 # Function to find and read the latest file from FMData
 def readFile():
     # Finding the lastest file made in your data file
     def findFile():
-        list_of_files = glob.glob(
-            "./FMData/*"
-        )  # * means all if need specific format then *.csv
-        latest_file = max(list_of_files, key=os.path.getctime)
-        return latest_file
+        #Finding out what way they would like to input their data
+        choice = ""
+        #Repeating until a valid input is given
+        while (choice != "LATEST" and choice != "INPUT"):
+            print("Would you like to choose the latest file in FMData or input the file name yourself?")
+            choice = input("Please enter LATEST or INPUT... : ").upper()
+        if (choice == "LATEST"):
+            list_of_files = glob.glob(
+                "./FMData/*"
+            )  # * means all if need specific format then *.csv
+            latest_file = max(list_of_files, key=os.path.getctime)
+            return latest_file
+        else: 
+            acceptedFile = False
+            while acceptedFile == False:
+                try:
+                    #Getting the file from the user
+                    inputFile = input("Please enter the file name and its extension (should be .rtf), or QUIT to exit the program : ")
+                    #Seeing if the user wants to Quit
+                    if (inputFile == "QUIT"):
+                        return inputFile
+                    #Finding the location of inputted file
+                    cur_path = os.path.dirname(__file__)
+                    new_path = os.path.relpath('.\\FMData\\' + inputFile, cur_path)
+                    #Seeing if the inputted file exists
+                    testOpen = open(new_path, encoding="utf8")
+                    acceptedFile = True
+                    return new_path
+                #If inputted file doesn't exist, return error and repeat
+                except:
+                    print("This file name cannot be found within the FMData folder")
+                
+
 
     # Applying the formatting for each line within the file, to return the attributes
     def formatLine(line):
@@ -24,7 +53,11 @@ def readFile():
         return lineData
 
     # Opening the latest file made in your data file - using findFile()
-    file = open(findFile(), encoding="utf8")
+    fileName = findFile()
+    #Seeing if the user enterred that they would like to quit
+    if (fileName == "QUIT"):
+        return "QUIT"
+    file = open(fileName, encoding="utf8")
     # Formatting the files data
     fileData = []
     for i, line in enumerate(file):
@@ -168,7 +201,7 @@ def createPlayerAttributes(fileData):
         playerDict["Acceleration"] = int(player[38])
         playerDict["Agility"] = int(player[39])
         playerDict["Balance"] = int(player[40])
-        playerDict["Jumping"] = int(player[41])
+        playerDict["Jumping Reach"] = int(player[41])
         playerDict["Natural Fitness"] = int(player[42])
         playerDict["Pace"] = int(player[43])
         playerDict["Stamina"] = int(player[44])
@@ -196,108 +229,15 @@ def createPlayerScores(playerInfos, playerAttributes):
         # Generating a score for every role in the game
         if i == 0:
             continue
-        playerInfo = generateGoalKeeperScores(playerInfos[i], playerAttributes[i])
-        playerInfo = generateFullBackScores(playerInfos[i], playerAttributes[i])
-        playerInfo = generateCentreBackScores(playerInfos[i], playerAttributes[i])
-        playerInfo = generateMidfielderScores(playerInfos[i], playerAttributes[i])
-        playerInfo = generateWingerScores(playerInfos[i], playerAttributes[i])
-        playerInfo = generateCAMScores(playerInfos[i], playerAttributes[i])
-        playerInfo = generateStrikerScores(playerInfos[i], playerAttributes[i])
+        
     return playerInfos
-
-
-# Function to generate the scores for Goal Keepers :
-def generateGoalKeeperScores(playerInfo, playerAttributes):
-    pass
-
-
-# Function to generate the scores for Full Backs :
-def generateFullBackScores(playerInfo, playerAttributes):
-    # Generating the players key attributes value
-    # This is calculated here as it will be the same for all roles here
-    keyAttScore = (
-        playerAttributes["Acceleration"] * 5
-        + playerAttributes["Work Rate"] * 5
-        + playerAttributes["Pace"] * 5
-        + playerAttributes["Stamina"] * 5
-    )
-    # Generating the individual scores for each role
-    playerInfo["CWB"] = round(
-        (keyAttScore+ (playerAttributes["Crossing"] * 3)+ (playerAttributes["Dribbling"] * 3)
-        + (playerAttributes["Technique"] * 3)+ (playerAttributes["Off The Ball"] * 3)+ (playerAttributes["Teamwork"] * 3)
-        + (playerAttributes["First Touch"] * 1)+ (playerAttributes["Marking"] * 1)+ (playerAttributes["Passing"] * 1)
-        + (playerAttributes["Tackling"] * 1)+ (playerAttributes["Anticipation"] * 1)+ (playerAttributes["Decisions"] * 1)
-        + (playerAttributes["Flair"] * 1)+ (playerAttributes["Positioning"] * 1)+ (playerAttributes["Agility"] * 1)
-        + (playerAttributes["Balance"] * 1))/ 9,1)
-    playerInfo["WB-D"] = round(
-        (keyAttScore + playerAttributes["Marking"] * 3 + playerAttributes["Tackling"] * 3 + 
-         playerAttributes["Anticipation"] * 3 + playerAttributes["Positioning"] * 3 + playerAttributes["Teamwork"] * 3 + 
-         playerAttributes["Crossing"] * 1 + playerAttributes["Dribbling"] * 1 + playerAttributes["First Touch"] * 1 + 
-         playerAttributes["Passing"] * 1 + playerAttributes["Technique"] * 1 + playerAttributes["Concentration"] * 1 + 
-         playerAttributes["Decisions"] * 1 + playerAttributes["Off The Ball"] * 1 + playerAttributes["Agility"] * 1 + 
-         playerAttributes["Balance"] * 1) / 9,1)
-    playerInfo["WB-S"] = round(
-        ((keyAttScore + playerAttributes["Marking"] * 3 + playerAttributes["Tackling"] * 3 + 
-         playerAttributes["Anticipation"] * 1 + playerAttributes["Positioning"] * 1 + playerAttributes["Teamwork"] * 3 + 
-         playerAttributes["Crossing"] * 3 + playerAttributes["Dribbling"] * 3 + playerAttributes["First Touch"] * 1 + 
-         playerAttributes["Passing"] * 1 + playerAttributes["Technique"] * 1 + playerAttributes["Concentration"] * 1 + 
-         playerAttributes["Decisions"] * 1 + playerAttributes["Off The Ball"] * 3 + playerAttributes["Agility"] * 1 + 
-         playerAttributes["Balance"] * 1) / 47) * 5,1)
-    playerInfo["WB-A"] = round(
-        ((keyAttScore + playerAttributes["Marking"] * 1 + playerAttributes["Tackling"] * 3 + 
-         playerAttributes["Anticipation"] * 1 + playerAttributes["Positioning"] * 1 + playerAttributes["Teamwork"] * 3 + 
-         playerAttributes["Crossing"] * 3 + playerAttributes["Dribbling"] * 3 + playerAttributes["First Touch"] * 1 + 
-         playerAttributes["Passing"] * 1 + playerAttributes["Technique"] * 3 + playerAttributes["Concentration"] * 1 + 
-         playerAttributes["Decisions"] * 1 + playerAttributes["Off The Ball"] * 3 + playerAttributes["Agility"] * 1 + 
-         playerAttributes["Balance"] * 1 + playerAttributes["Flair"] * 1) / 48) * 5,1)
-    playerInfo["WB-Au"] = round(
-        ((keyAttScore + playerAttributes["Marking"] * 3 + playerAttributes["Tackling"] * 3 + 
-         playerAttributes["Anticipation"] * 1 + playerAttributes["Positioning"] * 1 + playerAttributes["Teamwork"] * 3 + 
-         playerAttributes["Crossing"] * 3 + playerAttributes["Dribbling"] * 3 + playerAttributes["First Touch"] * 1 + 
-         playerAttributes["Passing"] * 1 + playerAttributes["Technique"] * 1 + playerAttributes["Concentration"] * 1 + 
-         playerAttributes["Decisions"] * 1 + playerAttributes["Off The Ball"] * 3 + playerAttributes["Agility"] * 1 + 
-         playerAttributes["Balance"] * 1) / 47) * 5,1)
-    playerInfo["IWB-D"] = round(
-        (keyAttScore + playerAttributes["Passing"] * 3 + playerAttributes["Tackling"] * 3 + 
-          playerAttributes["Anticipation"] * 3 + playerAttributes["Decisions"] * 3 + playerAttributes["Positioning"] * 3 + 
-          playerAttributes["Teamwork"] * 3 +  playerAttributes["First Touch"] * 1 +  playerAttributes["Marking"] * 1 +  
-          playerAttributes["Technique"] * 1 +  playerAttributes["Composure"] * 1 +  playerAttributes["Concentration"] * 1 +  
-          playerAttributes["Off The Ball"] * 1 +  playerAttributes["Agility"] * 1) / 9,1)
-    # Returning the player info dict back to the system
-    return playerInfo
-
-
-# Function to generate the scores for Centre Backs :
-def generateCentreBackScores(playerInfo, playerAttributes):
-    pass
-
-
-# Function to generate the scores for Midfielders (CM and CDM) :
-def generateMidfielderScores(playerInfo, playerAttributes):
-    pass
-
-
-# Function to generate the scores for Wingers :
-def generateWingerScores(playerInfo, playerAttributes):
-    pass
-
-
-# Function to generate the scores for CAMs :
-def generateCAMScores(playerInfo, playerAttributes):
-    pass
-
-
-# Function to generate the scores for Wingers :
-def generateWingerScores(playerInfo, playerAttributes):
-    pass
-
-
-# Function to generate the scores for Strikers :
-def generateStrikerScores(playerInfo, playerAttributes):
-    pass
 
 # Reading the file from the user
 fileData = readFile()
+if fileData == "QUIT":
+    print("User has decided to exit the program")
+    print("PROGRAM EXITING...")
+    sys.exit()
 #Removing any of the maksed values
 userAnswers = askUserQuestions()
 fileData = removeMaskedAttributes(fileData,userAnswers)
@@ -307,10 +247,19 @@ playerAttributes = createPlayerAttributes(fileData)
 # Creating the player scores
 playerInfos = createPlayerScores(playerInfos, playerAttributes)
 for player in playerInfos: 
-    if player["Name"] == "Aaron Ramsdale":
+    if player["Name"] == "Pedro Porro":
         print(player["CWB"])
         print(player["WB-D"])
         print(player["WB-S"])
         print(player["WB-A"])
         print(player["WB-Au"])
         print(player["IWB-D"])
+        print(player["IWB-S"])
+        print(player["IWB-A"])
+        print(player["IWB-Au"])
+        print(player["IFB-D"])
+        print(player["FB-D"])
+        print(player["FB-S"])
+        print(player["FB-A"])
+        print(player["FB-Au"])
+        print(player["NNFB-D"])
