@@ -1,0 +1,20 @@
+/* Styling the HTML Table */
+/* This code is heavily inspired from the code found at https://htmltable.com/sortable/*/
+th{
+    cursor: pointer;
+}
+
+th::after, th::before{
+    transition: color 0.2s ease-in-out;
+    font-size: 1.2em;
+    color: transparent;
+}
+
+th::after{
+    margin-left: 3px;
+    content: '\025B8'
+}
+
+th:hover::after{
+    color: inherit
+}

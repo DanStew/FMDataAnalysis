@@ -1,7 +1,8 @@
 import glob
 import os
 import sys
-
+from tabulate import tabulate
+import uuid
 
 # Function to find and read the latest file from FMData
 def readFile():
@@ -223,14 +224,34 @@ def createPlayerAttributes(fileData):
         playerDicts.append(playerDict)
     return playerDicts
 
+#Function to get the names of all of the player roles that will / have been generated
+def getPlayerRoles():
+    try:
+        # Finding the location of Attribute Rankings file file
+        cur_path = os.path.dirname(__file__)
+        new_path = os.path.relpath(".\\AttributeRankings\\currentAttributeRankings.txt", cur_path)
+        # Opening the file
+        attributeRankings = open(new_path, encoding="utf8")
+        #Making an empty array, to store the player roles
+        playerRoles = dict()
+        for line in attributeRankings:
+            #Separting the line into its two parts
+            lineInfo = line.split(" : ")
+            #Appending the player role to the playerRoles array
+            playerRoles[lineInfo[0]] = lineInfo[0]
+        return playerRoles
+    #If the currentAttributeRankings file doesn't exist
+    except:
+        print("currentAttributeRankings file cannot be found within the AttributeRankings folder")
+        print("PROGRAM EXITING...")
+        sys.exit()
+
 
 # Function which generates the player scores, for every player
 def createPlayerScores(playerInfos, playerAttributes):
     # Looping through every player
     for i, playerInfo in enumerate(playerInfos):
         # Generating a score for every role in the game
-        if i == 0:
-            continue
         try: 
             # Finding the location of Attribute Rankings file file
             cur_path = os.path.dirname(__file__)
@@ -345,6 +366,21 @@ def createPlayerScores(playerInfos, playerAttributes):
             sys.exit()
     return playerInfos
 
+#Function used to create and output a table, in the form of a HTML file
+def createTable(playerRoles,playerInfos):
+    #Creating the table information
+    tableHeaders = {"Inf":"Inf","Name":"Name","Position(s)":"Positions(s)","Club":"Club","Nationality":"Nationality"} | playerRoles
+    #Finding the file to output the HTML table
+    cur_path = os.path.dirname(__file__)
+    #Creating a randomly generated file name
+    filename = str(uuid.uuid4()) + ".html"
+    new_path = os.path.relpath(".\\OutputTables\\" + filename, cur_path)
+    tableFile = open(new_path,"w", encoding="utf8")
+    #Making the table
+    #Connecting the style sheet, inputting the head information
+    htmlHead = '<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Player Analysis</title><link rel="stylesheet" href="./TableScripts/tableStyle.css"><script src="./TableScripts/tableScripts.js"></script></head>'
+    tableFile.write(htmlHead)
+    tableFile.write(tabulate(playerInfos, headers=tableHeaders, tablefmt="html"))
 
 # Reading the file from the user
 fileData = readFile()
@@ -359,7 +395,8 @@ fileData = removeMaskedAttributes(fileData, userAnswers)
 playerInfos = createPlayerInfo(fileData)
 playerAttributes = createPlayerAttributes(fileData)
 # Creating the player scores
+playerRoles = getPlayerRoles()
 playerInfos = createPlayerScores(playerInfos, playerAttributes)
-for playerInfo in playerInfos:
-    if playerInfo["Name"] == "Victor Osimhen":
-        print(playerInfo)
+# Creating and outputting the table
+createTable(playerRoles,playerInfos)
+
