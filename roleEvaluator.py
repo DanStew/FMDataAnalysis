@@ -153,7 +153,7 @@ def askUserQuestions():
         while not attributeAccepted:
             try:
                 attributeAvg = round(
-                    float(input("Enter the value you would like to replace it with")), 1
+                    float(input("Enter the value you would like to replace it with : ")), 1
                 )
                 attributeAccepted = True
             except:
@@ -361,5 +361,5 @@ playerAttributes = createPlayerAttributes(fileData)
 # Creating the player scores
 playerInfos = createPlayerScores(playerInfos, playerAttributes)
 for playerInfo in playerInfos:
-    if playerInfo["Name"] == "Callum Lang":
+    if playerInfo["Name"] == "Victor Osimhen":
         print(playerInfo)
