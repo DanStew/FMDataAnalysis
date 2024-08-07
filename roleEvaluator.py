@@ -231,21 +231,20 @@ def createPlayerScores(playerInfos, playerAttributes):
         # Generating a score for every role in the game
         if i == 0:
             continue
-        try:
+        try: 
             # Finding the location of Attribute Rankings file file
             cur_path = os.path.dirname(__file__)
-            new_path = os.path.relpath(
-                ".\\AttributeRankings\\currentAttributeRankings.txt", cur_path
-            )
+            new_path = os.path.relpath(".\\AttributeRankings\\currentAttributeRankings.txt", cur_path)
             # Opening the file
             attributeRankings = open(new_path, encoding="utf8")
             for line in attributeRankings:
                 # Breaking the line down into two parts
                 lineInfo = line.strip().split(" : ")
-                # Finding out what number we need to divide by and creating array of int values
+                #Finding out what number we need to divide by and creating array of int values
+                tempArr = lineInfo[1].split(",")
                 count = 0
                 attMults = []
-                for nmb in lineInfo[1]:
+                for nmb in tempArr:
                     count += int(nmb)
                     attMults.append(int(nmb))
                 # Seeing if we are looking at a goalKeeper role
@@ -253,41 +252,41 @@ def createPlayerScores(playerInfos, playerAttributes):
                     playerInfo[lineInfo[0]] = round(
                         (
                             (
-                                playerAttributes["Aerial Reach"] * attMults[0]
-                                + playerAttributes["Command Of Area"] * attMults[1]
-                                + playerAttributes["Communication"] * attMults[2]
-                                + playerAttributes["Eccentricity"] * attMults[3]
-                                + playerAttributes["First Touch"] * attMults[4]
-                                + playerAttributes["Handling"] * attMults[5]
-                                + playerAttributes["Kicking"] * attMults[6]
-                                + playerAttributes["One On Ones"] * attMults[7]
-                                + playerAttributes["Passing"] * attMults[8]
-                                + playerAttributes["Punching"] * attMults[9]
-                                + playerAttributes["Reflexes"] * attMults[10]
-                                + playerAttributes["Rushing Out"] * attMults[11]
-                                + playerAttributes["Throwing"] * attMults[12]
-                                + playerAttributes["Aggression"] * attMults[13]
-                                + playerAttributes["Anticipation"] * attMults[14]
-                                + playerAttributes["Bravery"] * attMults[15]
-                                + playerAttributes["Composure"] * attMults[16]
-                                + playerAttributes["Concentration"] * attMults[17]
-                                + playerAttributes["Decisions"] * attMults[18]
-                                + playerAttributes["Determination"] * attMults[19]
-                                + playerAttributes["Flair"] * attMults[20]
-                                + playerAttributes["Leadership"] * attMults[21]
-                                + playerAttributes["Off The Ball"] * attMults[22]
-                                + playerAttributes["Positioning"] * attMults[23]
-                                + playerAttributes["Teamwork"] * attMults[24]
-                                + playerAttributes["Vision"] * attMults[25]
-                                + playerAttributes["Work Rate"] * attMults[26]
-                                + playerAttributes["Acceleration"] * attMults[27]
-                                + playerAttributes["Agility"] * attMults[28]
-                                + playerAttributes["Balance"] * attMults[29]
-                                + playerAttributes["Jumping Reach"] * attMults[30]
-                                + playerAttributes["Natural Fitness"] * attMults[31]
-                                + playerAttributes["Pace"] * attMults[32]
-                                + playerAttributes["Stamina"] * attMults[33]
-                                + playerAttributes["Strength"] * attMults[34]
+                                playerAttributes[i]["Aerial Reach"] * attMults[0]
+                                + playerAttributes[i]["Command Of Area"] * attMults[1]
+                                + playerAttributes[i]["Communication"] * attMults[2]
+                                + playerAttributes[i]["Eccentricity"] * attMults[3]
+                                + playerAttributes[i]["First Touch"] * attMults[4]
+                                + playerAttributes[i]["Handling"] * attMults[5]
+                                + playerAttributes[i]["Kicking"] * attMults[6]
+                                + playerAttributes[i]["1v1"] * attMults[7]
+                                + playerAttributes[i]["Passing"] * attMults[8]
+                                + playerAttributes[i]["Punching"] * attMults[9]
+                                + playerAttributes[i]["Reflexes"] * attMults[10]
+                                + playerAttributes[i]["Rushing Out"] * attMults[11]
+                                + playerAttributes[i]["Throwing"] * attMults[12]
+                                + playerAttributes[i]["Aggression"] * attMults[13]
+                                + playerAttributes[i]["Anticipation"] * attMults[14]
+                                + playerAttributes[i]["Bravery"] * attMults[15]
+                                + playerAttributes[i]["Composure"] * attMults[16]
+                                + playerAttributes[i]["Concentration"] * attMults[17]
+                                + playerAttributes[i]["Decisions"] * attMults[18]
+                                + playerAttributes[i]["Determination"] * attMults[19]
+                                + playerAttributes[i]["Flair"] * attMults[20]
+                                + playerAttributes[i]["Leadership"] * attMults[21]
+                                + playerAttributes[i]["Off The Ball"] * attMults[22]
+                                + playerAttributes[i]["Positioning"] * attMults[23]
+                                + playerAttributes[i]["Teamwork"] * attMults[24]
+                                + playerAttributes[i]["Vision"] * attMults[25]
+                                + playerAttributes[i]["Work Rate"] * attMults[26]
+                                + playerAttributes[i]["Acceleration"] * attMults[27]
+                                + playerAttributes[i]["Agility"] * attMults[28]
+                                + playerAttributes[i]["Balance"] * attMults[29]
+                                + playerAttributes[i]["Jumping Reach"] * attMults[30]
+                                + playerAttributes[i]["Natural Fitness"] * attMults[31]
+                                + playerAttributes[i]["Pace"] * attMults[32]
+                                + playerAttributes[i]["Stamina"] * attMults[33]
+                                + playerAttributes[i]["Strength"] * attMults[34]
                             )
                             / count
                         )
@@ -298,42 +297,42 @@ def createPlayerScores(playerInfos, playerAttributes):
                     playerInfo[lineInfo[0]] = round(
                         (
                             (
-                                playerAttributes["Corners"] * attMults[0]
-                                + playerAttributes["Crossing"] * attMults[1]
-                                + playerAttributes["Dribbling"] * attMults[2]
-                                + playerAttributes["Finishing"] * attMults[3]
-                                + playerAttributes["First Touch"] * attMults[4]
-                                + playerAttributes["Free Kicks"] * attMults[5]
-                                + playerAttributes["Heading"] * attMults[6]
-                                + playerAttributes["Long Shots"] * attMults[7]
-                                + playerAttributes["Long Throws"] * attMults[8]
-                                + playerAttributes["Marking"] * attMults[9]
-                                + playerAttributes["Passing"] * attMults[10]
-                                + playerAttributes["Penalty Taking"] * attMults[11]
-                                + playerAttributes["Tackling"] * attMults[12]
-                                + playerAttributes["Technique"] * attMults[13]
-                                + playerAttributes["Aggression"] * attMults[14]
-                                + playerAttributes["Anticipation"] * attMults[15]
-                                + playerAttributes["Bravery"] * attMults[16]
-                                + playerAttributes["Composure"] * attMults[17]
-                                + playerAttributes["Concentration"] * attMults[18]
-                                + playerAttributes["Decisions"] * attMults[19]
-                                + playerAttributes["Determination"] * attMults[20]
-                                + playerAttributes["Flair"] * attMults[21]
-                                + playerAttributes["Leadership"] * attMults[22]
-                                + playerAttributes["Off The Ball"] * attMults[23]
-                                + playerAttributes["Positioning"] * attMults[24]
-                                + playerAttributes["Teamwork"] * attMults[25]
-                                + playerAttributes["Vision"] * attMults[26]
-                                + playerAttributes["Work Rate"] * attMults[27]
-                                + playerAttributes["Acceleration"] * attMults[28]
-                                + playerAttributes["Agility"] * attMults[29]
-                                + playerAttributes["Balance"] * attMults[30]
-                                + playerAttributes["Jumping Reach"] * attMults[31]
-                                + playerAttributes["Natural Fitness"] * attMults[32]
-                                + playerAttributes["Pace"] * attMults[33]
-                                + playerAttributes["Stamina"] * attMults[34]
-                                + playerAttributes["Strength"] * attMults[35]
+                                playerAttributes[i]["Corners"] * attMults[0]
+                                + playerAttributes[i]["Crossing"] * attMults[1]
+                                + playerAttributes[i]["Dribbling"] * attMults[2]
+                                + playerAttributes[i]["Finishing"] * attMults[3]
+                                + playerAttributes[i]["First Touch"] * attMults[4]
+                                + playerAttributes[i]["Free Kicks"] * attMults[5]
+                                + playerAttributes[i]["Heading"] * attMults[6]
+                                + playerAttributes[i]["Long Shots"] * attMults[7]
+                                + playerAttributes[i]["Long Throws"] * attMults[8]
+                                + playerAttributes[i]["Marking"] * attMults[9]
+                                + playerAttributes[i]["Passing"] * attMults[10]
+                                + playerAttributes[i]["Penalty Taking"] * attMults[11]
+                                + playerAttributes[i]["Tackling"] * attMults[12]
+                                + playerAttributes[i]["Technique"] * attMults[13]
+                                + playerAttributes[i]["Aggression"] * attMults[14]
+                                + playerAttributes[i]["Anticipation"] * attMults[15]
+                                + playerAttributes[i]["Bravery"] * attMults[16]
+                                + playerAttributes[i]["Composure"] * attMults[17]
+                                + playerAttributes[i]["Concentration"] * attMults[18]
+                                + playerAttributes[i]["Decisions"] * attMults[19]
+                                + playerAttributes[i]["Determination"] * attMults[20]
+                                + playerAttributes[i]["Flair"] * attMults[21]
+                                + playerAttributes[i]["Leadership"] * attMults[22]
+                                + playerAttributes[i]["Off The Ball"] * attMults[23]
+                                + playerAttributes[i]["Positioning"] * attMults[24]
+                                + playerAttributes[i]["Teamwork"] * attMults[25]
+                                + playerAttributes[i]["Vision"] * attMults[26]
+                                + playerAttributes[i]["Work Rate"] * attMults[27]
+                                + playerAttributes[i]["Acceleration"] * attMults[28]
+                                + playerAttributes[i]["Agility"] * attMults[29]
+                                + playerAttributes[i]["Balance"] * attMults[30]
+                                + playerAttributes[i]["Jumping Reach"] * attMults[31]
+                                + playerAttributes[i]["Natural Fitness"] * attMults[32]
+                                + playerAttributes[i]["Pace"] * attMults[33]
+                                + playerAttributes[i]["Stamina"] * attMults[34]
+                                + playerAttributes[i]["Strength"] * attMults[35]
                             )
                             / count
                         )
@@ -341,9 +340,7 @@ def createPlayerScores(playerInfos, playerAttributes):
                         1,
                     )
         except:
-            print(
-                "CurrentAttributeRankings file couldn't be found in folder AttributeRankings"
-            )
+            print("currentAttributeRankings.txt cannot be found within the AttributeRankings file")
             print("PROGRAM EXITING...")
             sys.exit()
     return playerInfos
@@ -364,4 +361,5 @@ playerAttributes = createPlayerAttributes(fileData)
 # Creating the player scores
 playerInfos = createPlayerScores(playerInfos, playerAttributes)
 for playerInfo in playerInfos:
-    print(playerInfo)
+    if playerInfo["Name"] == "Callum Lang":
+        print(playerInfo)
