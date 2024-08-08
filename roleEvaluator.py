@@ -3,6 +3,7 @@ import os
 import sys
 from tabulate import tabulate
 import uuid
+import webbrowser
 
 # Function to find and read the latest file from FMData
 def readFile():
@@ -381,6 +382,8 @@ def createTable(playerRoles,playerInfos):
     htmlHead = '<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Player Analysis</title><link rel="stylesheet" href="./TableScripts/tableStyle.css"><script src="./TableScripts/tableScripts.js"></script></head>'
     tableFile.write(htmlHead)
     tableFile.write(tabulate(playerInfos, headers=tableHeaders, tablefmt="html"))
+    #Opening the file
+    webbrowser.open(new_path)
 
 # Reading the file from the user
 fileData = readFile()

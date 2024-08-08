@@ -43,9 +43,13 @@ document.addEventListener("click", function (e) {
     }
     reClassify(element, dir);
     var org_tbody = table.tBodies[0];
+    console.log(org_tbody)
     var rows = [].slice.call(org_tbody.rows, 0);
+    console.log(rows)
     var reverse = dir === ascending_th_class;
     rows.sort(function (a, b) {
+      console.log(a)
+      console.log(b)
       var x = getValue((reverse ? a : b).cells[column_index]);
       var y = getValue((reverse ? b : a).cells[column_index]);
       return isNaN(x - y) ? x.localeCompare(y) : x - y;
