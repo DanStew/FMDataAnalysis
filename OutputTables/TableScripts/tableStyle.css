@@ -1,7 +1,19 @@
 /* Styling the HTML Table */
 /* This code is heavily inspired from the code found at https://htmltable.com/sortable/*/
+table{
+    width: 100%;
+    border-spacing: 0px;
+}
+
 th{
     cursor: pointer;
+}
+
+th,td{
+    font-size: 16px;
+    border: 1px solid black;
+    padding : 2px;
+    text-wrap:nowrap;
 }
 
 th::after, th::before{
@@ -11,7 +23,7 @@ th::after, th::before{
 }
 
 th::after{
-    margin-left: 3px;
+    /* Code to add the small triangle to the th when hovered*/
     content: '\025B8'
 }
 
