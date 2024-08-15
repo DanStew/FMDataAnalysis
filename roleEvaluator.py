@@ -385,21 +385,239 @@ def createTable(playerRoles,playerInfos):
     #Opening the file
     webbrowser.open(new_path)
 
-# Reading the file from the user
-fileData = readFile()
-if fileData == "QUIT":
-    print("User has decided to exit the program")
-    print("PROGRAM EXITING...")
-    sys.exit()
-# Removing any of the maksed values
-userAnswers = askUserQuestions()
-fileData = removeMaskedAttributes(fileData, userAnswers)
-# Creating player dictionaries, using the read information
-playerInfos = createPlayerInfo(fileData)
-playerAttributes = createPlayerAttributes(fileData)
-# Creating the player scores
-playerRoles = getPlayerRoles()
-playerInfos = createPlayerScores(playerInfos, playerAttributes)
-# Creating and outputting the table
-createTable(playerRoles,playerInfos)
+#Function to get the user's file and generate player scores before outputting them in a table
+def outputPlayerScores() :
+    # Reading the file from the user
+    fileData = readFile()
+    if fileData == "QUIT":
+        print("User has decided to exit the program")
+        print("PROGRAM EXITING...")
+        sys.exit()
+    # Removing any of the maksed values
+    userAnswers = askUserQuestions()
+    fileData = removeMaskedAttributes(fileData, userAnswers)
+    # Creating player dictionaries, using the read information
+    playerInfos = createPlayerInfo(fileData)
+    playerAttributes = createPlayerAttributes(fileData)
+    # Creating the player scores
+    playerRoles = getPlayerRoles()
+    playerInfos = createPlayerScores(playerInfos, playerAttributes)
+    # Creating and outputting the table
+    createTable(playerRoles,playerInfos)
+
+#Function to update the attribute rankings used in calculations
+def updateAttributeRankings():
+    #Getting all the possible player roles
+    playerRoles = getPlayerRoles()
+    #Getting the player role the user is trying to update
+    playerRole = ""
+    while (playerRole != "QUIT"):
+        #Getting the player role input from the user
+        print("Please enter the player role which you would like to update the attribute rankings of")
+        print("Your input should be in the same format as seen in the Attribute Ranking files (AAA (Aa))")
+        print("Otherwise, enter QUIT to exit this interface")
+        playerRole = input("Enter the player role : ").strip()
+        #Checking to see if the player role exists
+        try:
+            if (playerRoles[playerRole]):
+                print()
+                print("Transferring you to the attribute selector")
+                attributeSelector(playerRole)
+                print()
+        #If the player role doesn't exist, repeat the code
+        except:
+            print()
+            print("Player Role doesn't exist")
+            print()
+
+#Function to get all the possible attributes for the different roles
+def getAttributes(roleType):
+    # Finding the location of attributes file
+    cur_path = os.path.dirname(__file__)
+    new_path = os.path.relpath(".\\AttributeRankings\\allAttributeOrder.txt", cur_path)
+    try:
+        #Opening the file
+        file = open(new_path, encoding="utf8")
+        #Extracting the data from the file
+        fileData = []
+        for line in file:
+            fileData.append(line.split(" : "))
+        #Returning the correct array, depending on what roleType we are
+        if roleType == "keeper":
+            return fileData[0][1].split(",")
+        else:
+            return fileData[1][1].split(",")
+    except:
+        print("allAttributeOrder.txt does not exist within the Attribute Rankings folder")
+
+
+#Function to allow the user to select an attribute
+def attributeSelector(playerRole):
+    #Seeing if we are looking at a keeper or other role
+    if "k" in playerRole:
+        #Getting all the attributes that the user could input
+        attributes = getAttributes("keeper")
+        #Allowing the user to choose their attribute
+        chosenAttribute = ""
+        while (chosenAttribute != "exit"):
+            print()
+            print("Please select the attribute which you would like to change the ranking of in the " + playerRole + " role...")
+            print("Alternatively, enter exit to return to the player role selector")
+            chosenAttribute = input("Enter the attribute you would like to change, or exit : ").lower()
+        print()
+        print("Returning back to player role selector...")
+        print()
+    else:
+        #Getting all the attributes that the user could input
+        attributes = getAttributes("other")
+        #Allowing the user to choose their attribute
+        chosenAttribute = ""
+        while (chosenAttribute != "exit"):
+            print()
+            print("Please select the attribute which you would like to change the ranking of in the " + playerRole + " role...")
+            print("Alternatively, enter exit to return to the player role selector")
+            chosenAttribute = input("Enter the attribute you would like to change, or exit : ").lower()
+            print()
+            #Seeing if the inputted attribute is valid
+            if chosenAttribute in attributes : 
+                print("Attribute accepted, transferring you to the value input interface...")
+                print()
+                attributeValueInput(playerRole,chosenAttribute)
+            else:
+                print("Attribute value not accepted, please try again...")
+                print()
+        print()
+        print("Returning back to player role selector...")
+        print()
+    
+#Function to allow the user to input their new attribute value, and then change the attribute ranking
+def attributeValueInput(playerRole,chosenAttribute):
+    acceptedValue = False
+    while (not acceptedValue):
+        #Getting an input from the user
+        print()
+        print("Enter the number which you would like to set as the new attribute ranking for " + chosenAttribute + " in the " + playerRole + " role...")
+        print("Alternatively, enter EXIT in order to return back to the Attribute Select interface")
+        nmb = input("Enter your input... : ").upper()
+        #Seeing if the user wants to exit
+        if (nmb == "EXIT"):
+            return
+        #See if the user has entered a number
+        try:
+            nmb = int(nmb)
+            setNewAttribute(playerRole,chosenAttribute,nmb)
+            print()
+            print(chosenAttribute + " has been updated to " + str(nmb) + " for Player Role : " + playerRole)
+            print("Returning back to the Attribute Selector interface...")
+            print()
+        except:
+            print("Nmb input must be of type INT")
+
+#Function to set the new attribute ranking for the chosen attribute from the user
+def setNewAttribute(playerRole,chosenAttribute,nmb):
+    #Finding the index of the chosen array within the file
+    attributeIndex = -1
+    cur_path = os.path.dirname(__file__)
+    new_path = os.path.relpath(".\\AttributeRankings\\allAttributeOrder.txt", cur_path)
+    try:
+        file = open(new_path, encoding="utf8")
+        #Making an array of lines in the file
+        fileData = []
+        for line in file:
+            fileData.append(line.split(" : "))
+        #Seeing if the position is a goalkeeper or not
+        attributeOrder = []
+        if "K" in playerRole:
+            attributeOrder = fileData[0][1].split(",")
+        else:
+            attributeOrder = fileData[1][1].split(",")
+        #Looping through attributeOrder until we find the attribute that we are changing
+        for i,attribute in attributeOrder:
+            if attribute == chosenAttribute:
+                attributeIndex = i
+        #Seeing if the attributeOrder hasn't been set
+        if attributeIndex == -1:
+            print()
+            print("Attribute cannot be found within allAttributeOrder file")
+            print("Unexpected error occurred")
+            print("System exiting...")
+            sys.exit()
+    except:
+        print("allAttributeOrder.txt cannot be found within the AttributeRankings file")
+    #Making an array of the lines within CurrentAttributeRankings.txt
+    #At the same time, if the current playerRole is the playerRole we are changing, the changes will then be made
+    #Getting the currentAttributeRankings.txt file...
+    cur_path = os.path.dirname(__file__)
+    new_path = os.path.relpath(".\\AttributeRankings\\currentAttributeRankings.txt", cur_path)
+    try:
+        file = open(new_path, encoding="utf8")
+        fileInfo = []
+        for line in file : 
+            #Seeing if the current line is of the player role we are changing
+            if playerRole in line : 
+                #Splitting the line into parts
+                lineData = line.split(" : ")
+                #Creating an array of all attribute multipliers
+                attributeData = lineData[1].split(",")
+                #Setting the attribute multiplier at the attributes index 
+                attributeData[attributeIndex] = nmb
+                #Remaking the line
+                tempString = ""
+                for i,mult in enumerate(attributeData):
+                    if i == 0:
+                        tempString = mult
+                    else:
+                        tempString += "," + mult
+                #Setting back to lineData
+                lineData[1] = tempString
+                #Making the line again
+                newLine = lineData[0] + " : " + lineData[1]
+                #Appending the line
+                fileInfo.append(newLine)
+            else: 
+                fileInfo.append(line)
+        #Rewriting the file
+        file = open(new_path,"w", encoding="utf8")
+        for line in file:
+            file.write(line)
+    except:
+        print("currentAttributeRankings.txt cannot be found within the AttributeRankings file")
+
+
+
+#Start Point of the Program, CLI Menu
+def mainFunction():
+    while True:
+        #Outputting options to the user
+        print()
+        print("===============================================================")
+        print("      Welcome to Football Manager Player Analysis")
+        print()
+        print("Please input a number from the options below : ")
+        print("1. Generate and Output Player Scores")
+        print("2. Update Attribute Ranking Variables")
+        print("3. Exit Program")
+        #Collecting the input from the user
+        nmb = input("Enter your choice (1 to 3) : ")
+        if (nmb!="1" and nmb!="2" and nmb!="3"):
+            print("Input must be a whole number between 1 and 3")
+            print()
+        #Transferring user to the location they want
+        if (nmb == "1"):
+            print("Transferring you to the Player Role Generator System...")
+            print()
+            outputPlayerScores()
+            print()
+        if (nmb == "2"):
+            print("Transferring you to the Attribute Updater System...")
+            print()
+            updateAttributeRankings()
+            print()
+        if (nmb == "3"):
+            print("PROGRAM EXITING...")
+            sys.exit()
+
+#Calling the start point
+if __name__ == "__main__":
+    mainFunction()
 

@@ -7,3 +7,8 @@ NOTE : I would advise leaving the defaultAttributeRankings file alone, however i
 
 Changes can be directly made to the currentAttributeRankings file, alternatively you can change it using the CLI or GUI
 The currentAttributeRankings can be reverted back to the default values through the CLI and GUI aswell
+
+The allAttributeOrder.txt file is a list, in order, of all of the attributes used to rank the players.
+This file SHOULDN'T BE CHANGED, as it will cause unforseen errors to the system.
+It can be used to understand all the attribute names, however.
+NOTE : The order of attributes in GK/SK roles are different to every other role in the system
