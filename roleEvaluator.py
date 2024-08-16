@@ -509,6 +509,7 @@ def attributeValueInput(playerRole,chosenAttribute):
             print()
             print(chosenAttribute + " has been updated to " + str(nmb) + " for Player Role : " + playerRole)
             print("Returning back to the Attribute Selector interface...")
+            acceptedValue = True
             print()
         except:
             print("Nmb input must be of type INT")
@@ -532,7 +533,7 @@ def setNewAttribute(playerRole,chosenAttribute,nmb):
         else:
             attributeOrder = fileData[1][1].split(",")
         #Looping through attributeOrder until we find the attribute that we are changing
-        for i,attribute in attributeOrder:
+        for i,attribute in enumerate(attributeOrder):
             if attribute == chosenAttribute:
                 attributeIndex = i
         #Seeing if the attributeOrder hasn't been set
@@ -542,6 +543,7 @@ def setNewAttribute(playerRole,chosenAttribute,nmb):
             print("Unexpected error occurred")
             print("System exiting...")
             sys.exit()
+        file.close()
     except:
         print("allAttributeOrder.txt cannot be found within the AttributeRankings file")
     #Making an array of the lines within CurrentAttributeRankings.txt
@@ -560,14 +562,14 @@ def setNewAttribute(playerRole,chosenAttribute,nmb):
                 #Creating an array of all attribute multipliers
                 attributeData = lineData[1].split(",")
                 #Setting the attribute multiplier at the attributes index 
-                attributeData[attributeIndex] = nmb
+                attributeData[attributeIndex] = str(nmb)
                 #Remaking the line
                 tempString = ""
                 for i,mult in enumerate(attributeData):
                     if i == 0:
                         tempString = mult
                     else:
-                        tempString += "," + mult
+                        tempString += "," + str(mult)
                 #Setting back to lineData
                 lineData[1] = tempString
                 #Making the line again
@@ -577,8 +579,9 @@ def setNewAttribute(playerRole,chosenAttribute,nmb):
             else: 
                 fileInfo.append(line)
         #Rewriting the file
+        file.close()
         file = open(new_path,"w", encoding="utf8")
-        for line in file:
+        for line in fileInfo:
             file.write(line)
     except:
         print("currentAttributeRankings.txt cannot be found within the AttributeRankings file")
@@ -596,11 +599,12 @@ def mainFunction():
         print("Please input a number from the options below : ")
         print("1. Generate and Output Player Scores")
         print("2. Update Attribute Ranking Variables")
+        print("3. Reset Attribute Rankings")
         print("3. Exit Program")
         #Collecting the input from the user
-        nmb = input("Enter your choice (1 to 3) : ")
-        if (nmb!="1" and nmb!="2" and nmb!="3"):
-            print("Input must be a whole number between 1 and 3")
+        nmb = input("Enter your choice (1 to 4) : ")
+        if (nmb!="1" and nmb!="2" and nmb!="3" and nmb!="4"):
+            print("Input must be a whole number between 1 and 4")
             print()
         #Transferring user to the location they want
         if (nmb == "1"):
