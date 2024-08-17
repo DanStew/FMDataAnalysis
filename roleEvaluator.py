@@ -586,7 +586,55 @@ def setNewAttribute(playerRole,chosenAttribute,nmb):
     except:
         print("currentAttributeRankings.txt cannot be found within the AttributeRankings file")
 
+#Function to ensure the user wants to reset their attributes
+def ensureUserResponse():
+    #Ensuring that the user does want to reset the attributes
+    while True:
+        print("Are you sure you want to RESET to default attribute rankings ?")
+        ans = input("Enter your input, yes or no : ").lower()
+        print()
+        if (ans == "no"):
+            print("Returning to main menu...")
+            print()
+            return
+        elif (ans == "yes"):
+            print("Resetting attributes to default")
+            resetAttributeMultipliers()
+            print()
+            return
+        else:
+            print("Invalid response recieved, please try again...")
+            print() 
 
+#Function to reset the users attribute rankings back to default
+def resetAttributeMultipliers():
+    print()
+    #Getting all the data from the defaultAttributeRankings file
+    # Finding the location of Attribute Rankings file file
+    cur_path = os.path.dirname(__file__)
+    new_path = os.path.relpath(".\\AttributeRankings\\defaultAttributeRankings.txt", cur_path)
+    #Trying to open the file and store the information
+    fileInfo = []
+    try:
+        file = open(new_path, encoding="utf8")
+        for line in file:
+            fileInfo.append(line)
+        file.close()
+    except:
+        print("defaultAttributeRankings.txt cannot be found within the Attribute Rankings file")
+        print("Exiting out of System...")
+        sys.exit()
+    #Replacing the currentAttributeRankings text with the defaultAttributeRankings text
+    new_path = os.path.relpath(".\\AttributeRankings\\currentAttributeRankings.txt", cur_path)
+    try:
+        file = open(new_path, "w", encoding="utf8")
+        for line in fileInfo:
+            file.write(line)
+    except:
+        print("currentAttributeRankings.txt cannot be found")
+        print("Exiting out of System...")
+        sys.exit()
+    print("Attribute Rankings successfully set to default values")
 
 #Start Point of the Program, CLI Menu
 def mainFunction():
@@ -600,7 +648,7 @@ def mainFunction():
         print("1. Generate and Output Player Scores")
         print("2. Update Attribute Ranking Variables")
         print("3. Reset Attribute Rankings")
-        print("3. Exit Program")
+        print("4. Exit Program")
         #Collecting the input from the user
         nmb = input("Enter your choice (1 to 4) : ")
         if (nmb!="1" and nmb!="2" and nmb!="3" and nmb!="4"):
@@ -618,6 +666,11 @@ def mainFunction():
             updateAttributeRankings()
             print()
         if (nmb == "3"):
+            print("Transferring you to the Reset Attribute Multipliers System...")
+            print()
+            ensureUserResponse()
+            print()
+        if (nmb == "4"):
             print("PROGRAM EXITING...")
             sys.exit()
 
