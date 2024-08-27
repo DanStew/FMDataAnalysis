@@ -51,7 +51,12 @@ Item {
                 font.italic: true
                 font.bold: true
                 font.pointSize: 42
-                onClicked : loader.source = "GenerateAttributeRankings.qml"
+
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape : Qt.PointingHandCursor
+                    onClicked : loader.source = "GenerateAttributeRankings.qml"
+                }
             }
 
             Text {
@@ -75,6 +80,11 @@ Item {
                 font.pointSize: 42
                 font.italic: true
                 font.bold: true
+
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape : Qt.PointingHandCursor
+                }
             }
         }
     }
