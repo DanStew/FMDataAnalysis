@@ -9,10 +9,12 @@ Item {
     width: 800
     height: 600
 
+    //Connecting the slots
     QmlSlots{
         id : qmlSlots
     }
 
+    //Making the loader to load the file and allow for switching between files
     Loader{
         id : loader
         anchors.fill : parent
@@ -52,6 +54,7 @@ Item {
                 font.bold: true
                 font.pointSize: 42
 
+                //Transporting the user to another file if the button is clicked
                 MouseArea {
                     anchors.fill: parent
                     cursorShape : Qt.PointingHandCursor
@@ -81,6 +84,7 @@ Item {
                 font.italic: true
                 font.bold: true
 
+                //Transporting the user to another file
                 MouseArea {
                     anchors.fill: parent
                     cursorShape : Qt.PointingHandCursor

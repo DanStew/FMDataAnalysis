@@ -2,17 +2,25 @@ import QtQuick 6.0
 import QtQuick.Controls 2.1
 import QtQuick.Window 2.1
 import QtQuick.Controls.Material 2.1
+import io.qt.textproperties
 
 Item {
     id: root
     width: 800
     height: 600
 
+    //Making the loader
     Loader{
         id : loader
         anchors.fill : parent
         sourceComponent : rect
     }
+
+    //Connecting the python slots
+    QmlSlots{
+        id : qmlSlots
+    }
+
 
     Component{
         id : rect
@@ -66,10 +74,19 @@ Item {
                     y: 3
                     width: 369
                     height: 46
-                    text: qsTr("Enter File Name...")
                     font.pixelSize: 30
                     verticalAlignment: Text.AlignVCenter
                     font.italic: true
+
+                    //Making placeholder text in the input
+                    property string placeholderText: "Enter File Name..."
+
+                    Text {
+                        text: file_input.placeholderText
+                        font.pointSize : 30
+                        color: "#aaa"
+                        visible: !file_input.text
+                    }
                 }
             }
 
@@ -87,6 +104,15 @@ Item {
 
                 MouseArea {
                     anchors.fill: parent
+                    onClicked : {
+                        qmlSlots.test_slot(file_input.text)
+                        if (file_input.text == ""){
+                            file_input.text = "OMG"
+                        }
+                        else{
+                            file_input.text = "Worked"
+                        }
+                    }
                     cursorShape : Qt.PointingHandCursor
                 }
             }
@@ -120,6 +146,7 @@ Item {
                 font.bold: true
             }
 
+            //The upper right rectangle to go back to the main menu
             Rectangle {
                 id: return_background_1
                 x: 0
@@ -128,6 +155,7 @@ Item {
                 height: 54
                 color: "#ff0000"
                 
+                //Transporting the user to another file
                 MouseArea {
                     anchors.fill: parent
                     onClicked: loader.source = "MainWindow.qml"
@@ -143,6 +171,7 @@ Item {
                     color: "#ff0000"
                     radius: 27
 
+                    //Transporting the user to another file
                     MouseArea {
                         anchors.fill: parent
                         onClicked: loader.source = "MainWindow.qml"

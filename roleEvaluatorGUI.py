@@ -9,6 +9,7 @@ from PySide6.QtQml import QmlElement
 QML_IMPORT_NAME = "io.qt.textproperties"
 QML_IMPORT_MAJOR_VERSION = 1
 
+#Making a class of Slots to be used in the QML files
 @QmlElement
 class QmlSlots(QObject):
     def __init__(self):
@@ -16,14 +17,16 @@ class QmlSlots(QObject):
 
     @Slot(str)
     def test_slot(self,str):
-        view.setSource("./GUIFiles/GenerateAttributeRankings.qml")
+        print(str)
 
+#Making the mainWindow to display the GUI
 class MainWindow(QQuickView):
     def __init__(self):
         super().__init__()
         self.setSource("./GUIFiles/MainWindow.qml")
         self.rootContext().setContextProperty("QmlSlots", self)
 
+#Making and displaying the application
 app = QApplication()
 view = MainWindow()
 view.show()
