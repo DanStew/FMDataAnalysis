@@ -2,14 +2,23 @@ import glob
 import os
 import sys
 import uuid
-import tabulate
+from tabulate import tabulate
 import webbrowser
 
-# Function to find and read the latest file from FMData
-def readFile():
-    # Finding the lastest file made in your data file
-    def findFile():
-        # Finding out what way they would like to input their data
+#Function to get the latest file from the FMData folder
+def getLatestFile():
+    list_of_files = glob.glob(
+                "./FMData/*"
+            )  # * means all if need specific format then *.csv
+    #Ensuring that the list of files isn't empty
+    if (list_of_files != []):
+        latest_file = max(list_of_files, key=os.path.getctime)
+        return latest_file
+    else:
+        return "Error"
+
+def getUserFileInputChoice():
+    # Finding out what way they would like to input their data
         choice = ""
         # Repeating until a valid input is given
         while choice != "LATEST" and choice != "INPUT":
@@ -17,34 +26,59 @@ def readFile():
                 "Would you like to choose the latest file in FMData or input the file name yourself?"
             )
             choice = input("Please enter LATEST or INPUT... : ").upper()
-        if choice == "LATEST":
-            list_of_files = glob.glob(
-                "./FMData/*"
-            )  # * means all if need specific format then *.csv
-            latest_file = max(list_of_files, key=os.path.getctime)
-            return latest_file
-        else:
-            acceptedFile = False
-            while acceptedFile == False:
-                try:
-                    # Getting the file from the user
-                    inputFile = input(
-                        "Please enter the file name and its extension (should be .rtf), or QUIT to exit the program : "
-                    )
-                    # Seeing if the user wants to Quit
-                    if inputFile == "QUIT":
-                        return inputFile
-                    # Finding the location of inputted file
-                    cur_path = os.path.dirname(__file__)
-                    new_path = os.path.relpath(".\\FMData\\" + inputFile, cur_path)
-                    # Seeing if the inputted file exists
-                    testOpen = open(new_path, encoding="utf8")
-                    acceptedFile = True
-                    return new_path
-                # If inputted file doesn't exist, return error and repeat
-                except:
-                    print("This file name cannot be found within the FMData folder")
+        return choice
 
+#Function to get the user's file name and validate it
+def getUserFileName():
+    acceptedFile = False
+    newPath = ""
+    while acceptedFile == False:
+        # Getting the file from the user
+        inputFile = input(
+            "Please enter the file name and its extension (should be .rtf), or QUIT to exit the program : "
+        )
+        # Seeing if the user wants to Quit
+        if inputFile == "QUIT":
+            return inputFile
+        cur_path = os.path.dirname(__file__)
+        new_path = os.path.relpath(".\\FMData\\" + inputFile, cur_path)
+        acceptedFile = validateFileInput(inputFile)
+        if (acceptedFile == False):
+            print("Invalid file name has been enterred, please try again")
+    #Returning the path to the file, once it has been validated
+    return new_path
+
+#Function to ensure that the user has enterred a valid file name
+def validateFileInput(inputFile):
+    # Finding the location of inputted file
+    try :
+        cur_path = os.path.dirname(__file__)
+        new_path = os.path.relpath(".\\FMData\\" + inputFile, cur_path)
+        # Seeing if the inputted file exists
+        testOpen = open(new_path, encoding="utf8")
+        return True
+    except:
+        return False
+
+#Function to get the user's file input and then read in the file
+def getFileCLI():
+    #Getting the name of the file
+    choice = getUserFileInputChoice()
+    if choice == "LATEST":
+        fileName = getLatestFile()       
+    else:
+        fileName = getUserFileName()
+    #Reading the file into the system
+    if fileName == "Error":
+        print("There are no files within the FMData folder, so no files can be collected")
+        print("Exiting the system...")
+        sys.exit()
+    else:    
+        return readFile(fileName)
+
+
+# Function to find and read the latest file from FMData
+def readFile(fileName):
     # Applying the formatting for each line within the file, to return the attributes
     def formatLine(line):
         tempData = line.split("|")  # Spltting the data into the individual columns
@@ -56,8 +90,6 @@ def readFile():
             )  # Adding the items to an array for the players information
         return lineData
 
-    # Opening the latest file made in your data file - using findFile()
-    fileName = findFile()
     # Seeing if the user enterred that they would like to quit
     if fileName == "QUIT":
         return "QUIT"
@@ -385,16 +417,20 @@ def createTable(playerRoles,playerInfos):
     #Opening the file
     webbrowser.open(new_path)
 
-#Function to get the user's file and generate player scores before outputting them in a table
-def outputPlayerScores() :
+#Function to implement a firstly CLI functions before generating outputPlayerScores()
+def preOutputPlayerScoresCLI():
     # Reading the file from the user
-    fileData = readFile()
+    fileData = getFileCLI()
     if fileData == "QUIT":
         print("User has decided to exit the program")
         print("PROGRAM EXITING...")
         sys.exit()
     # Removing any of the maksed values
     userAnswers = askUserQuestions()
+    outputPlayerScores(fileData,userAnswers)
+
+#Function to get the user's file and generate player scores before outputting them in a table
+def outputPlayerScores(fileData,userAnswers) :
     fileData = removeMaskedAttributes(fileData, userAnswers)
     # Creating player dictionaries, using the read information
     playerInfos = createPlayerInfo(fileData)

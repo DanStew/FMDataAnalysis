@@ -104,16 +104,19 @@ Item {
 
                 MouseArea {
                     anchors.fill: parent
+                    cursorShape : Qt.PointingHandCursor
                     onClicked : {
-                        qmlSlots.test_slot(file_input.text)
-                        if (file_input.text == ""){
-                            file_input.text = "OMG"
+                        if (qmlSlots.validate_file_input(file_input.text)){
+                            //Saving the input file's path
+                            qmlSlots.set_input_file(qmlSlots.get_input_file_path(file_input.text))
+                            //Loading the user to the next page
+                            loader.source = "ErrorValueManager.qml"
                         }
+                        //If not valid, import error text
                         else{
-                            file_input.text = "Worked"
+                            error_message.text = "File Input cannot be found in FMData file"
                         }
                     }
-                    cursorShape : Qt.PointingHandCursor
                 }
             }
 
@@ -129,6 +132,20 @@ Item {
                 MouseArea {
                     anchors.fill: parent
                     cursorShape : Qt.PointingHandCursor
+                    onClicked : {
+                        //Getting the latest file
+                        var filePath = qmlSlots.get_latest_file()
+                        //Ensuring the latest file isn't an error
+                        if (filePath == "Error"){
+                            error_message.text = "No files exist within the FMData folder, so no files can be collected"
+                        }
+                        else{
+                            //Saving the input file's path
+                            qmlSlots.set_input_file(filePath)
+                            //Loading the user to the next page
+                            loader.source = "ErrorValueManager.qml"
+                        }
+                    }
                 }
             }
 

@@ -1,6 +1,6 @@
 import sys
 #Importing the functions needed to make the CLI work
-from roleEvaluatorFunctions import outputPlayerScores, updateAttributeRankings, ensureUserResponse
+from roleEvaluatorFunctions import outputPlayerScores, updateAttributeRankings, ensureUserResponse, preOutputPlayerScoresCLI
 
 #Start Point of the Program, CLI Menu
 def mainFunction():
@@ -24,7 +24,7 @@ def mainFunction():
         if (nmb == "1"):
             print("Transferring you to the Player Role Generator System...")
             print()
-            outputPlayerScores()
+            preOutputPlayerScoresCLI()
             print()
         if (nmb == "2"):
             print("Transferring you to the Attribute Updater System...")

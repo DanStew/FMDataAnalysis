@@ -2,17 +2,25 @@ import QtQuick 6.0
 import QtQuick.Controls 2.1
 import QtQuick.Window 2.1
 import QtQuick.Controls.Material 2.1
+import io.qt.textproperties
 
 Item {
     id: root
     width: 800
     height: 600
 
+    //Making the loader
     Loader{
         id : loader
         anchors.fill : parent
         sourceComponent : rect
     }
+
+    //Connecting the python slots
+    QmlSlots{
+        id : qmlSlots
+    }
+
 
     Component{
         id : rect
@@ -66,10 +74,19 @@ Item {
                     y: 3
                     width: 369
                     height: 46
-                    text: qsTr("Enter File Name...")
                     font.pixelSize: 30
                     verticalAlignment: Text.AlignVCenter
                     font.italic: true
+
+                    //Making placeholder text in the input
+                    property string placeholderText: "Enter File Name..."
+
+                    Text {
+                        text: file_input.placeholderText
+                        font.pointSize : 30
+                        color: "#aaa"
+                        visible: !file_input.text
+                    }
                 }
             }
 
@@ -88,6 +105,18 @@ Item {
                 MouseArea {
                     anchors.fill: parent
                     cursorShape : Qt.PointingHandCursor
+                    onClicked : {
+                        if (qmlSlots.validate_file_input(file_input.text)){
+                            //Saving the input file's path
+                            qmlSlots.set_input_file(qmlSlots.get_input_file_path(file_input.text))
+                            //Loading the user to the next page
+                            loader.source = "ErrorValueManager.qml"
+                        }
+                        //If not valid, import error text
+                        else{
+                            error_message.text = "File Input cannot be found in FMData file"
+                        }
+                    }
                 }
             }
 
@@ -103,6 +132,20 @@ Item {
                 MouseArea {
                     anchors.fill: parent
                     cursorShape : Qt.PointingHandCursor
+                    onClicked : {
+                        //Getting the latest file
+                        var filePath = qmlSlots.get_latest_file()
+                        //Ensuring the latest file isn't an error
+                        if (filePath == "Error"){
+                            error_message.text = "No files exist within the FMData folder, so no files can be collected"
+                        }
+                        else{
+                            //Saving the input file's path
+                            qmlSlots.set_input_file(filePath)
+                            //Loading the user to the next page
+                            loader.source = "ErrorValueManager.qml"
+                        }
+                    }
                 }
             }
 
@@ -120,6 +163,7 @@ Item {
                 font.bold: true
             }
 
+            //The upper right rectangle to go back to the main menu
             Rectangle {
                 id: return_background_1
                 x: 0
@@ -128,6 +172,7 @@ Item {
                 height: 54
                 color: "#ff0000"
                 
+                //Transporting the user to another file
                 MouseArea {
                     anchors.fill: parent
                     onClicked: loader.source = "MainWindow.qml"
@@ -143,6 +188,7 @@ Item {
                     color: "#ff0000"
                     radius: 27
 
+                    //Transporting the user to another file
                     MouseArea {
                         anchors.fill: parent
                         onClicked: loader.source = "MainWindow.qml"
