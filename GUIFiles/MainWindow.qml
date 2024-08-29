@@ -84,6 +84,7 @@ Item {
                 MouseArea {
                     anchors.fill: parent
                     cursorShape : Qt.PointingHandCursor
+                    onClicked : loader.source = "UpdateAttributeRankings.qml"
                 }
             }
         }
