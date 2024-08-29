@@ -45,7 +45,11 @@ Item {
                     text: qsTr("Return to Main Menu")
                     font.bold: true
                     font.pointSize: 30
-                    onClicked : loader.source = "MainWindow.qml"
+                    MouseArea {
+                        anchors.fill: parent
+                        cursorShape : Qt.PointingHandCursor
+                        onClicked : loader.source = "MainWindow.qml"
+                    }
                 }
             }
         }

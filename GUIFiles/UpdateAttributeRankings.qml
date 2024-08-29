@@ -78,10 +78,10 @@ Item {
 
             Text {
                 id: page_title
-                x: 38
-                y: 69
+                x: 100
+                y: 50
                 text: qsTr("Update Attribute Rankings")
-                font.pixelSize: 60
+                font.pixelSize: 50
                 font.bold: true
                 font.family: "Arial"
             }
@@ -89,7 +89,7 @@ Item {
             Text {
                 id: player_role_selection_text
                 x: 149
-                y: 145
+                y: 110
                 width: 237
                 height: 59
                 text: qsTr("Player Role : ")
@@ -100,7 +100,7 @@ Item {
             ComboBox {
                 id: player_role_selection_input
                 x: 434
-                y: 150
+                y: 115
                 width: 189
                 height: 50
             }
@@ -108,9 +108,9 @@ Item {
             ScrollView {
                 id: attributes_scrollview
                 x: 20
-                y: 220
+                y: 170
                 width: 771
-                height: 361
+                height: 340
                 focusPolicy: Qt.NoFocus
                 ScrollBar.vertical.policy: ScrollBar.AlwaysOn
                 contentHeight: 900
@@ -1152,6 +1152,21 @@ Item {
                     }
                 }
             }
+
+            Button {
+                    id: button
+                    x: 148
+                    y: 520
+                    width: 504
+                    height: 60
+                    text: qsTr("Update Attribute Rankings")
+                    font.bold: true
+                    font.pointSize: 26
+                    MouseArea {
+                        anchors.fill: parent
+                        cursorShape : Qt.PointingHandCursor
+                    }
+                }
         }
     }
 }
