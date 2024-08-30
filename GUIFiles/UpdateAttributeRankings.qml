@@ -113,7 +113,7 @@ Item {
                 x: 20
                 y: 170
                 width: 771
-                height: 340
+                height: 280
                 focusPolicy: Qt.NoFocus
                 ScrollBar.vertical.policy: ScrollBar.AlwaysOn
                 contentHeight: 900
@@ -153,7 +153,9 @@ Item {
                             y: 8
                             width: 104
                             height: 34
-                            font.pixelSize: 12
+                            font.pixelSize: 24
+                            font.bold: true
+                            text : qmlSlots.getAttributeRanking(player_role_selection_input.currentText,"1")
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
@@ -182,7 +184,9 @@ Item {
                             y: 8
                             width: 104
                             height: 34
-                            font.pixelSize: 12
+                            font.pixelSize: 24
+                            font.bold: true
+                            text : qmlSlots.getAttributeRanking(player_role_selection_input.currentText,"3")
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
@@ -210,7 +214,9 @@ Item {
                             y: 8
                             width: 104
                             height: 34
-                            font.pixelSize: 12
+                            font.pixelSize: 24
+                            font.bold: true
+                            text : qmlSlots.getAttributeRanking(player_role_selection_input.currentText,"5")
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
@@ -238,7 +244,9 @@ Item {
                             y: 8
                             width: 104
                             height: 34
-                            font.pixelSize: 12
+                            font.pixelSize: 24
+                            font.bold: true
+                            text : qmlSlots.getAttributeRanking(player_role_selection_input.currentText,"7")
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
@@ -266,7 +274,9 @@ Item {
                             y: 8
                             width: 104
                             height: 34
-                            font.pixelSize: 12
+                            font.pixelSize: 24
+                            font.bold: true
+                            text : qmlSlots.getAttributeRanking(player_role_selection_input.currentText,"9")
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
@@ -294,7 +304,9 @@ Item {
                             y: 8
                             width: 104
                             height: 34
-                            font.pixelSize: 12
+                            font.pixelSize: 24
+                            font.bold: true
+                            text : qmlSlots.getAttributeRanking(player_role_selection_input.currentText,"11")
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
@@ -322,7 +334,9 @@ Item {
                             y: 8
                             width: 104
                             height: 34
-                            font.pixelSize: 12
+                            font.pixelSize: 24
+                            font.bold: true
+                            text : qmlSlots.getAttributeRanking(player_role_selection_input.currentText,"13")
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
@@ -350,7 +364,9 @@ Item {
                             y: 8
                             width: 104
                             height: 34
-                            font.pixelSize: 12
+                            font.pixelSize: 24
+                            font.bold: true
+                            text : qmlSlots.getAttributeRanking(player_role_selection_input.currentText,"acceleration")
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
@@ -378,7 +394,9 @@ Item {
                             y: 8
                             width: 104
                             height: 34
-                            font.pixelSize: 12
+                            font.pixelSize: 24
+                            font.bold: true
+                            text : qmlSlots.getAttributeRanking(player_role_selection_input.currentText,"bravery")
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
@@ -406,7 +424,9 @@ Item {
                             y: 8
                             width: 104
                             height: 34
-                            font.pixelSize: 12
+                            font.pixelSize: 24
+                            font.bold: true
+                            text : qmlSlots.getAttributeRanking(player_role_selection_input.currentText,"concentration")
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
@@ -434,7 +454,9 @@ Item {
                             y: 8
                             width: 104
                             height: 34
-                            font.pixelSize: 12
+                            font.pixelSize: 24
+                            font.bold: true
+                            text : qmlSlots.getAttributeRanking(player_role_selection_input.currentText,"determination")
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
@@ -462,7 +484,9 @@ Item {
                             y: 8
                             width: 104
                             height: 34
-                            font.pixelSize: 12
+                            font.pixelSize: 24
+                            font.bold: true
+                            text : qmlSlots.getAttributeRanking(player_role_selection_input.currentText,"leadership")
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
@@ -490,7 +514,9 @@ Item {
                             y: 8
                             width: 104
                             height: 34
-                            font.pixelSize: 12
+                            font.pixelSize: 24
+                            font.bold: true
+                            text : qmlSlots.getAttributeRanking(player_role_selection_input.currentText,"positioning")
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
@@ -518,7 +544,9 @@ Item {
                             y: 8
                             width: 104
                             height: 34
-                            font.pixelSize: 12
+                            font.pixelSize: 24
+                            font.bold: true
+                            text : qmlSlots.getAttributeRanking(player_role_selection_input.currentText,"vision")
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
@@ -546,7 +574,9 @@ Item {
                             y: 8
                             width: 104
                             height: 34
-                            font.pixelSize: 12
+                            font.pixelSize: 24
+                            font.bold: true
+                            text : qmlSlots.getAttributeRanking(player_role_selection_input.currentText,"acceleration")
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
@@ -574,7 +604,9 @@ Item {
                             y: 8
                             width: 105
                             height: 34
-                            font.pixelSize: 12
+                            font.pixelSize: 24
+                            font.bold: true
+                            text : qmlSlots.getAttributeRanking(player_role_selection_input.currentText,"balance")
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
@@ -602,7 +634,9 @@ Item {
                             y: 8
                             width: 104
                             height: 34
-                            font.pixelSize: 12
+                            font.pixelSize: 24
+                            font.bold: true
+                            text : qmlSlots.getAttributeRanking(player_role_selection_input.currentText,"natural fitness")
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
@@ -630,7 +664,9 @@ Item {
                             y: 8
                             width: 104
                             height: 34
-                            font.pixelSize: 12
+                            font.pixelSize: 24
+                            font.bold: true
+                            text : qmlSlots.getAttributeRanking(player_role_selection_input.currentText,"stamina")
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
@@ -671,7 +707,9 @@ Item {
                             y: 8
                             width: 104
                             height: 34
-                            font.pixelSize: 12
+                            font.pixelSize: 24
+                            font.bold: true
+                            text : qmlSlots.getAttributeRanking(player_role_selection_input.currentText,"2")
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
@@ -700,7 +738,9 @@ Item {
                             y: 8
                             width: 104
                             height: 34
-                            font.pixelSize: 12
+                            font.pixelSize: 24
+                            font.bold: true
+                            text : qmlSlots.getAttributeRanking(player_role_selection_input.currentText,"4")
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
@@ -728,7 +768,9 @@ Item {
                             y: 8
                             width: 104
                             height: 34
-                            font.pixelSize: 12
+                            font.pixelSize: 24
+                            font.bold: true
+                            text : qmlSlots.getAttributeRanking(player_role_selection_input.currentText,"6")
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
@@ -756,7 +798,9 @@ Item {
                             y: 8
                             width: 104
                             height: 34
-                            font.pixelSize: 12
+                            font.pixelSize: 24
+                            font.bold: true
+                            text : qmlSlots.getAttributeRanking(player_role_selection_input.currentText,"8")
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
@@ -784,7 +828,9 @@ Item {
                             y: 8
                             width: 104
                             height: 34
-                            font.pixelSize: 12
+                            font.pixelSize: 24
+                            font.bold: true
+                            text : qmlSlots.getAttributeRanking(player_role_selection_input.currentText,"10")
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
@@ -812,7 +858,9 @@ Item {
                             y: 8
                             width: 104
                             height: 34
-                            font.pixelSize: 12
+                            font.pixelSize: 24
+                            font.bold: true
+                            text : qmlSlots.getAttributeRanking(player_role_selection_input.currentText,"12")
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
@@ -841,7 +889,9 @@ Item {
                             y: 8
                             width: 104
                             height: 34
-                            font.pixelSize: 12
+                            font.pixelSize: 24
+                            font.bold: true
+                            text : qmlSlots.getAttributeRanking(player_role_selection_input.currentText,"technique")
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
@@ -869,7 +919,9 @@ Item {
                             y: 8
                             width: 104
                             height: 34
-                            font.pixelSize: 12
+                            font.pixelSize: 24
+                            font.bold: true
+                            text : qmlSlots.getAttributeRanking(player_role_selection_input.currentText,"anticipation")
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
@@ -897,7 +949,9 @@ Item {
                             y: 8
                             width: 104
                             height: 34
-                            font.pixelSize: 12
+                            font.pixelSize: 24
+                            font.bold: true
+                            text : qmlSlots.getAttributeRanking(player_role_selection_input.currentText,"composure")
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
@@ -925,7 +979,9 @@ Item {
                             y: 8
                             width: 104
                             height: 34
-                            font.pixelSize: 12
+                            font.pixelSize: 24
+                            font.bold: true
+                            text : qmlSlots.getAttributeRanking(player_role_selection_input.currentText,"decisions")
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
@@ -953,7 +1009,9 @@ Item {
                             y: 8
                             width: 104
                             height: 34
-                            font.pixelSize: 12
+                            font.pixelSize: 24
+                            font.bold: true
+                            text : qmlSlots.getAttributeRanking(player_role_selection_input.currentText,"flair")
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
@@ -981,7 +1039,9 @@ Item {
                             y: 8
                             width: 104
                             height: 34
-                            font.pixelSize: 12
+                            font.pixelSize: 24
+                            font.bold: true
+                            text : qmlSlots.getAttributeRanking(player_role_selection_input.currentText,"off the ball")
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
@@ -1009,7 +1069,9 @@ Item {
                             y: 8
                             width: 104
                             height: 34
-                            font.pixelSize: 12
+                            font.pixelSize: 24
+                            font.bold: true
+                            text : qmlSlots.getAttributeRanking(player_role_selection_input.currentText,"teamwork")
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
@@ -1037,7 +1099,9 @@ Item {
                             y: 8
                             width: 104
                             height: 34
-                            font.pixelSize: 12
+                            font.pixelSize: 24
+                            font.bold: true
+                            text : qmlSlots.getAttributeRanking(player_role_selection_input.currentText,"work rate")
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
@@ -1065,7 +1129,9 @@ Item {
                             y: 8
                             width: 105
                             height: 34
-                            font.pixelSize: 12
+                            font.pixelSize: 24
+                            font.bold: true
+                            text : qmlSlots.getAttributeRanking(player_role_selection_input.currentText,"agility")
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
@@ -1093,7 +1159,9 @@ Item {
                             y: 8
                             width: 104
                             height: 34
-                            font.pixelSize: 12
+                            font.pixelSize: 24
+                            font.bold: true
+                            text : qmlSlots.getAttributeRanking(player_role_selection_input.currentText,"jumping reach")
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
@@ -1121,7 +1189,9 @@ Item {
                             y: 8
                             width: 104
                             height: 34
-                            font.pixelSize: 12
+                            font.pixelSize: 24
+                            font.bold: true
+                            text : qmlSlots.getAttributeRanking(player_role_selection_input.currentText,"pace")
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
@@ -1149,7 +1219,9 @@ Item {
                             y: 8
                             width: 104
                             height: 34
-                            font.pixelSize: 12
+                            font.pixelSize: 24
+                            font.bold: true
+                            text : qmlSlots.getAttributeRanking(player_role_selection_input.currentText,"strength")
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
@@ -1160,7 +1232,7 @@ Item {
             Button {
                     id: button
                     x: 148
-                    y: 520
+                    y: 460
                     width: 504
                     height: 60
                     text: qsTr("Update Attribute Rankings")
@@ -1171,6 +1243,21 @@ Item {
                         cursorShape : Qt.PointingHandCursor
                     }
                 }
+            
+            Text {
+                id: error_message
+                x: 98
+                y: 520
+                width: 604
+                height: 96
+                color: "#fe0808"
+                font.pixelSize: 24
+                text : qmlSlots.checkErrors(error_message.text)
+                horizontalAlignment: Text.AlignHCenter
+                wrapMode: Text.Wrap
+                font.italic: true
+                font.bold: true
+            }
         }
     }
 }

@@ -19,6 +19,7 @@ QML_IMPORT_MAJOR_VERSION = 1
 class QmlSlots(QObject):
     def __init__(self):
         super().__init__()
+        self.checkedFiles = False
 
     @Slot(str)
     def test_slot(self,str):
@@ -83,6 +84,84 @@ class QmlSlots(QObject):
         else: 
             #Outputting the attribute
             return attribute
+        
+    #Function to return the Current Attribute Ranking of the given attribute in the given role
+    @Slot (str,str,result=str)
+    def getAttributeRanking(self,playerRole,attribute):
+        #Returning nothing if technique is involved in a keeper role
+        if "K" in playerRole and attribute == "technique":
+            return ""
+        #Translating some of the attributes
+        #These are used the translate the 13 attributes which could be two different values
+        try:
+            #Seeing if attribute is a number
+            attribute = int(attribute)
+            #Translating attribute to be the correct value
+            if "K" in playerRole:
+                valToAtt = {1 : "aerial reach",2 : "command of area",3 : "communication",4 : "eccentricity",5 : "first touch",6 : "handling",7:"kicking",8 : "1v1",9:"passing",10:"punching",11:"reflexes",12:"rushing out",13:"throwing"}
+                attribute = valToAtt[attribute]
+            else:
+                valToAtt = {1 : "corners",2 : "crossing",3 : "dribbling",4 : "finishing",5 : "first touch",6 : "free kicks",7:"heading",8 : "long shots",9:"long throws",10:"marking",11:"passing",12:"penalty taking",13:"tackling"}
+                attribute = valToAtt[attribute]
+        except:
+            attribute = attribute
+        #Finding the index of the attribute within the line
+        cur_path = os.path.dirname(__file__)
+        new_path = os.path.relpath(".\\AttributeRankings\\allAttributeOrder.txt", cur_path)
+        file = open(new_path, encoding="utf8")
+        #Collecting the info from the file
+        fileInfo = []
+        for line in file:
+            fileInfo.append(line)
+        #Finding the correct string to search through
+        attributeOrder = []
+        if "K" in playerRole : 
+            attributeOrder = fileInfo[0].split(" : ")[1]
+        else : 
+            attributeOrder = fileInfo[0].split(" : ")[1]
+        #Finding the index of the attribute within the file order
+        attributeOrder = attributeOrder.strip().split(",")
+        attributeIndex = attributeOrder.index(attribute)
+        file.close()
+        return attributeIndex
+    
+    #Function to return whether the value given is a valid attribute or not
+    @Slot (str,result=bool)
+    def checkValidAttribute(self,possibleAttribute):
+        try:
+            #Seeing if the attribute is an integer
+            int(possibleAttribute)
+            return True
+        except:
+            return False
+        
+    #Function to check whether there will occur any errors when updating attributes
+    @Slot (str,result=str)
+    def checkErrors(self,currentError):
+        #If there is already an error, you don't need to check for another error
+        if currentError != "":
+            return currentError
+        #Checking for errors that could occur during the checkValidAttribute file
+        #Only implementing this code once
+        if not self.checkedFiles:
+            #Ensuring the allAttributeOrder.txt file is present
+            try:
+                cur_path = os.path.dirname(__file__)
+                new_path = os.path.relpath(".\\AttributeRankings\\allAttributeOrder.txt", cur_path)
+                open(new_path)
+            except:
+                return "allAttributeOrder.txt could not be found within the AttributeRankings file"
+            #Ensuring the currentAttributeRankings.txt file is present
+            try:
+                cur_path = os.path.dirname(__file__)
+                new_path = os.path.relpath(".\\AttributeRankings\\currentAttributeRankings.txt", cur_path)
+                open(new_path)
+            except:
+                return "currentAttributeRankings.txt could not be found within the AttributeRankings file"
+            #Telling the system that the files have been checked
+            self.checkedFiles = True
+        return ""
+        
     
     #Function to check whether technique component needs to be hidden or not
     @Slot (str,result=bool)
