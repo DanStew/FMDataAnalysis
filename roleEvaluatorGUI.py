@@ -68,6 +68,32 @@ class QmlSlots(QObject):
         fileData = readFile(fileName)
         outputPlayerScores(fileData,userAnswers)
 
+    #Function to return the correct the correct text to be displayed, depending on the role selected
+    @Slot (str,str,result=str)
+    def getAttributeText(self,attribute,playerRole):
+        #Seeing if the player role is a goalkeeper
+        if "K" in playerRole:
+            #Making alternate text for all the attributes
+            outputText = {"Corners : " : "Aerial Reach : ","Crossing : " : "C... of Area : ","Dribbling : " : "Communication : ","Finishing : " : "Eccentricity : ","First Touch : " : "First Touch : ","Free Kicks : " : "Handling : ","Heading : " : "Kicking : ","Long Shots : " : "One on Ones : ","Long Throws : " : "Passing : ","Marking : " : "Punching : ","Passing : " : "Reflexes : ","Penalty Taking : " : "Rushing Out : ","Tackling : " : "Throwing : "}
+            #Returning the related attribute text
+            try:
+                return outputText[attribute]
+            except:
+                return "Error"
+        else: 
+            #Outputting the attribute
+            return attribute
+    
+    #Function to check whether technique component needs to be hidden or not
+    @Slot (str,result=bool)
+    def checkHide(self,playerRole):
+        #Seeing if the role is a goalkeeper or not
+        if "K" in playerRole : 
+            return False
+        else:
+            return True
+
+
 #Class to store a set of saved information needed in the system
 class SavedItems():
     def __init__(self):

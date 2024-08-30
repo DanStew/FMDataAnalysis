@@ -103,6 +103,9 @@ Item {
                 y: 115
                 width: 189
                 height: 50
+                font.pixelSize : 24
+                font.bold: true
+                model: ["SK (De)","SK (Su)","SK (At)","GK (De)","CWB (Su)","CWB (At)","WB (De)","WB (Su)","WB (At)","WB (Au)","IWB (De)","IWB (Su)","IWB (At)","IWB (Au)","IFB (De)","FB (De)","FB (Su)","FB (At)","FB (Au)","NNFB (De)","WCB (De)","WCB (Su)","WCB (At)","LIB (De)","LIB (Su)","BPD (De)","BPD (St)","BPD (Co)","CD (De)","CD (St)","CD (Co)","NNCB (De)","NNCB (St)","NNCB (Co)","BWM (De)","BWM (Su)","REG (Su)","VOL (Su)","VOL (At)","DLP (De)","DLP (Su)","HB (De)","DM (De)","DM (Su)","ANC (De)","RPM (Su)","BBM (Su)","CM (De)","CM (Su)","CM (At)","CM (Au)","MEZ (Su)","MEZ (At)","AP (Su)","AP (At)","CAR (Su)","W (Su)","W (At)","IW (Su)","IW (At)","DW (De)","DW (Su)","WM (De)","WM (Su)","WM (At)","WM (Au)","WP (Su)","WP (At)","IF (Su)","IF (At)","RAM (At)","WTF (Su)","WTF (At)","TREQ (At)","SS (At)","AM (Su)","AM (At)","ENG (Su)","PF (De)","PF (Su)","PF (At)","AF (At)","P (At)","FN (Su)","DLF (Su)","DLF (At)","TF (Su)","TF (At)","CF (Su)","CF (At)"]
             }
 
             ScrollView {
@@ -129,7 +132,7 @@ Item {
                     Text {
                         id: corners_component
                         x: 20
-                        text: qsTr("Corners : ")
+                        text: qsTr(qmlSlots.getAttributeText("Corners : ",player_role_selection_input.currentText))
                         font.pixelSize: 30
                         horizontalAlignment: Text.AlignHCenter
                         rotation: -0.464
@@ -159,7 +162,7 @@ Item {
                     Text {
                         id: dribbling_component
                         x: 20
-                        text: qsTr("Dribbling : ")
+                        text: qsTr(qmlSlots.getAttributeText("Dribbling : ",player_role_selection_input.currentText))
                         font.pixelSize: 30
                         horizontalAlignment: Text.AlignHCenter
                         rotation: -0.464
@@ -188,7 +191,7 @@ Item {
                     Text {
                         id: first_touch_component
                         x: 20
-                        text: qsTr("First Touch : ")
+                        text: qsTr(qmlSlots.getAttributeText("First Touch : ",player_role_selection_input.currentText))
                         font.pixelSize: 30
                         rotation: -0.464
                         font.bold: true
@@ -216,7 +219,7 @@ Item {
                     Text {
                         id: heading_component
                         x: 20
-                        text: qsTr("Heading : ")
+                        text: qsTr(qmlSlots.getAttributeText("Heading : ",player_role_selection_input.currentText))
                         font.pixelSize: 30
                         rotation: -0.464
                         font.bold: true
@@ -244,7 +247,7 @@ Item {
                     Text {
                         id: long_throws_component
                         x: 20
-                        text: qsTr("Long Throws : ")
+                        text: qsTr(qmlSlots.getAttributeText("Long Throws : ",player_role_selection_input.currentText))
                         font.pixelSize: 30
                         rotation: -0.464
                         font.bold: true
@@ -272,7 +275,7 @@ Item {
                     Text {
                         id: passing_component
                         x: 20
-                        text: qsTr("Passing : ")
+                        text: qsTr(qmlSlots.getAttributeText("Passing : ",player_role_selection_input.currentText))
                         font.pixelSize: 30
                         rotation: -0.464
                         font.bold: true
@@ -300,7 +303,7 @@ Item {
                     Text {
                         id: tackling_component
                         x: 20
-                        text: qsTr("Tackling : ")
+                        text: qsTr(qmlSlots.getAttributeText("Tackling : ",player_role_selection_input.currentText))
                         font.pixelSize: 30
                         rotation: -0.464
                         font.bold: true
@@ -648,7 +651,7 @@ Item {
                     Text {
                         id: crossing_component
                         x: 20
-                        text: qsTr("Crossing : ")
+                        text: qsTr(qmlSlots.getAttributeText("Crossing : ",player_role_selection_input.currentText))
                         font.pixelSize: 30
                         horizontalAlignment: Text.AlignHCenter
                         rotation: -0.464
@@ -677,7 +680,7 @@ Item {
                     Text {
                         id: finishing_component
                         x: 20
-                        text: qsTr("Finishing : ")
+                        text: qsTr(qmlSlots.getAttributeText("Finishing : ",player_role_selection_input.currentText))
                         font.pixelSize: 30
                         horizontalAlignment: Text.AlignHCenter
                         rotation: -0.464
@@ -706,7 +709,7 @@ Item {
                     Text {
                         id: free_kicks_component
                         x: 20
-                        text: qsTr("Free Kicks : ")
+                        text: qsTr(qmlSlots.getAttributeText("Free Kicks : ",player_role_selection_input.currentText))
                         font.pixelSize: 30
                         rotation: -0.464
                         font.bold: true
@@ -734,7 +737,7 @@ Item {
                     Text {
                         id: long_shots_component
                         x: 20
-                        text: qsTr("Long Shots : ")
+                        text: qsTr(qmlSlots.getAttributeText("Long Shots : ",player_role_selection_input.currentText))
                         font.pixelSize: 30
                         rotation: -0.464
                         font.bold: true
@@ -762,7 +765,7 @@ Item {
                     Text {
                         id: marking_component
                         x: 20
-                        text: qsTr("Marking : ")
+                        text: qsTr(qmlSlots.getAttributeText("Marking : ",player_role_selection_input.currentText))
                         font.pixelSize: 30
                         rotation: -0.464
                         font.bold: true
@@ -790,7 +793,7 @@ Item {
                     Text {
                         id: penalty_taking_component
                         x: 20
-                        text: qsTr("Penalty Taking : ")
+                        text: qsTr(qmlSlots.getAttributeText("Penalty Taking : ",player_role_selection_input.currentText))
                         font.pixelSize: 30
                         rotation: -0.464
                         font.bold: true
@@ -819,6 +822,7 @@ Item {
                         id: technique_component
                         x: 20
                         text: qsTr("Technique : ")
+                        visible : qmlSlots.checkHide(player_role_selection_input.currentText)
                         font.pixelSize: 30
                         rotation: -0.464
                         font.bold: true
