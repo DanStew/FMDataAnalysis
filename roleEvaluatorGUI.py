@@ -91,6 +91,8 @@ class QmlSlots(QObject):
         #Returning nothing if technique is involved in a keeper role
         if "K" in playerRole and attribute == "technique":
             return ""
+        if playerRole == "":
+            return ""
         #Translating some of the attributes
         #These are used the translate the 13 attributes which could be two different values
         try:
@@ -106,24 +108,42 @@ class QmlSlots(QObject):
         except:
             attribute = attribute
         #Finding the index of the attribute within the line
-        cur_path = os.path.dirname(__file__)
-        new_path = os.path.relpath(".\\AttributeRankings\\allAttributeOrder.txt", cur_path)
-        file = open(new_path, encoding="utf8")
-        #Collecting the info from the file
-        fileInfo = []
-        for line in file:
-            fileInfo.append(line)
-        #Finding the correct string to search through
-        attributeOrder = []
-        if "K" in playerRole : 
-            attributeOrder = fileInfo[0].split(" : ")[1]
-        else : 
-            attributeOrder = fileInfo[0].split(" : ")[1]
-        #Finding the index of the attribute within the file order
-        attributeOrder = attributeOrder.strip().split(",")
-        attributeIndex = attributeOrder.index(attribute)
-        file.close()
-        return attributeIndex
+        attributeIndex = 0
+        try:
+            cur_path = os.path.dirname(__file__)
+            new_path = os.path.relpath(".\\AttributeRankings\\allAttributeOrder.txt", cur_path)
+            file = open(new_path, encoding="utf8")
+            #Collecting the info from the file
+            fileInfo = []
+            for line in file:
+                fileInfo.append(line)
+            #Finding the correct string to search through
+            attributeOrder = []
+            if "K" in playerRole : 
+                attributeOrder = fileInfo[0].split(" : ")[1]
+            else : 
+                attributeOrder = fileInfo[1].split(" : ")[1]
+            #Finding the index of the attribute within the file order
+            attributeOrder = attributeOrder.strip().split(",")
+            attributeIndex = attributeOrder.index(attribute)
+            file.close()
+        except:
+            return ""
+        #Finding the item at that index, in the current attribute rankings file
+        try:
+            #Getting the file
+            cur_path = os.path.dirname(__file__)
+            new_path = os.path.relpath(".\\AttributeRankings\\currentAttributeRankings.txt", cur_path)
+            file = open(new_path, encoding="utf8")
+            #Finding the line we are lookign for
+            for line in file:
+                lineInfo = line.split(" : ")
+                if lineInfo[0] == playerRole:
+                    attributeInfo = lineInfo[1].split(",")
+                    return str(attributeInfo[attributeIndex])
+        except:
+            return ""
+        
     
     #Function to return whether the value given is a valid attribute or not
     @Slot (str,result=bool)
