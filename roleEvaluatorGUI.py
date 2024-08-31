@@ -144,6 +144,44 @@ class QmlSlots(QObject):
         except:
             return ""
         
+    #Function to process the updating of attributes
+    @Slot (str,list,result=str)
+    def processUpdateAttributes(self,playerRole,attributeInputs):
+        #Ensuring all the attributes have been stripped
+        for i,item in enumerate(attributeInputs):
+            #Removing technique attribute, if the player role is a goalkeeper
+            if ("K" in playerRole and i == 13):
+                del attributeInputs[i]
+                continue
+            if (self.checkValidAttribute(item.strip())):
+                attributeInputs[i] = item
+            else:
+                return "Error : One or more attributes are null"
+        #Making an attribute string to be used
+        attributeString = ",".join(str(attribute) for attribute in attributeInputs)
+        #Opening the file and finding where we need to place this new string
+        try:
+            cur_path = os.path.dirname(__file__)
+            new_path = os.path.relpath(".\\AttributeRankings\\currentAttributeRankings.txt", cur_path)
+            file = open(new_path, encoding="utf8")
+            #Getting all the data from the file
+            fileData = []
+            for line in file:
+                lineData = line.split(" : ")
+                #If the line corresponds to the role we want, include the new attributeString
+                if lineData[0] == playerRole:
+                    lineData[1] = attributeString
+                newLine = lineData[0] + " : " + lineData[1]
+                fileData.append(newLine)
+            file.close()
+            #Rewriting all the data back into the file
+            file = open(new_path,"w", encoding="utf8")
+            for line in fileData:
+                file.write(line)
+            file.close()
+            return "Attribute Rankings have been successfully updated"
+        except:
+            return "Error : currentAttributeRankings.txt could not be found in the AttributeRankings folder"
     
     #Function to return whether the value given is a valid attribute or not
     @Slot (str,result=bool)

@@ -1241,6 +1241,20 @@ Item {
                     MouseArea {
                         anchors.fill: parent
                         cursorShape : Qt.PointingHandCursor
+                        onClicked : {
+                            //Putting all the inputs into an array
+                            var attributeInputs = [corners_input.text,crossing_input.text,
+                            dribbling_input.text,finishing_input.text,first_touch_input.text,free_kicks_input.text,heading_input.text,
+                            long_shots_input.text,long_throws_input.text,marking_input.text,passing_input.text,penalty_taking_input.text,
+                            tackling_input.text,technique_input.text,aggression_input.text,anticipation_input.text,bravery_input.text,
+                            composure_input.text,concentration_input.text,decisions_input.text,determination_input.text,flair_input.text,
+                            leadership_input.text,off_the_ball_input.text,positioning_input.text,teamwork_input.text,vision_input.text,
+                            work_rate_input.text,acceleration_input.text,agility_input.text,balance_input.text,jumping_reach_input.text,
+                            natural_fitness_input.text,pace_input.text,stamina_input.text,strength_input.text]
+                            //Calling the process attributes function
+                            //This function either implements the update, and returns success, or returns an error
+                            error_message.text = qmlSlots.processUpdateAttributes(player_role_selection_input.currentText,attributeInputs)
+                        }
                     }
                 }
             
