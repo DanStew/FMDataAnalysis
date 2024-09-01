@@ -4,5 +4,8 @@ I haven't personally seen or used the code made by squirrel, however the idea it
 
 Directory Contents : 
 roleEvaluator - Used to evaluate players attributes to how well suited they would be for roles
+FMViews - Folder with views that can be imported into FM, to create the needed output for FMData
 FMData - Folder where data exported from FM is put
-AnalysisResults - Folder where results of the Python Code will be output
+AttributeRankings - Contains the attribute ranking information
+OutputTables - Folder where output HTML tables will be stored
+GUIFiles - Folder where the QML files needed to make the GUI are stored
