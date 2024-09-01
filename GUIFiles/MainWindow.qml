@@ -45,7 +45,7 @@ Item {
             Button {
                 id: generate_player_scores_button
                 x: 62
-                y: 249
+                y: 220
                 text: qsTr("Generate Player Scores")
                 padding: 10
                 font.italic: true
@@ -62,7 +62,7 @@ Item {
             Text {
                 id: main_title_2
                 x: 78
-                y: 108
+                y: 94
                 text: qsTr("Player Analyser")
                 font.pixelSize: 80
                 padding: 20
@@ -73,8 +73,8 @@ Item {
 
             Button {
                 id: update_attributes_button
-                x: 38
-                y: 389
+                x: 30
+                y: 340
                 text: qsTr("Update Attribute Rankings")
                 padding: 10
                 font.pointSize: 42
@@ -85,6 +85,23 @@ Item {
                     anchors.fill: parent
                     cursorShape : Qt.PointingHandCursor
                     onClicked : loader.source = "UpdateAttributeRankings.qml"
+                }
+            }
+
+            Button {
+                id: restore_default_attribute_rankings_button
+                x: 66
+                y: 460
+                text: qsTr("Restore Default Attribute Rankings")
+                padding: 10
+                font.pointSize: 28
+                font.italic: true
+                font.bold: true
+
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape : Qt.PointingHandCursor
+                    onClicked : loader.source = "RestoreDefaultAttributes.qml"
                 }
             }
         }

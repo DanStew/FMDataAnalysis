@@ -229,6 +229,35 @@ class QmlSlots(QObject):
             return False
         else:
             return True
+        
+    #Function to implement the Restore Default Attributes code, if correct input
+    @Slot (str,result=str)
+    def restoreDefaultAttributes(self,confirmInput):
+        if confirmInput.lower() == "yes":
+            #Getting all the data from the defaultAttributeRankings file
+            # Finding the location of Attribute Rankings file file
+            cur_path = os.path.dirname(__file__)
+            new_path = os.path.relpath(".\\AttributeRankings\\defaultAttributeRankings.txt", cur_path)
+            #Trying to open the file and store the information
+            fileInfo = []
+            try:
+                file = open(new_path, encoding="utf8")
+                for line in file:
+                    fileInfo.append(line)
+                file.close()
+            except:
+                return "defaultAttributeRankings.txt cannot be found within the Attribute Rankings file"
+            #Replacing the currentAttributeRankings text with the defaultAttributeRankings text
+            new_path = os.path.relpath(".\\AttributeRankings\\currentAttributeRankings.txt", cur_path)
+            try:
+                file = open(new_path, "w", encoding="utf8")
+                for line in fileInfo:
+                    file.write(line)
+            except:
+                return "currentAttributeRankings.txt cannot be found"
+            return "Successfully restored default attribute rankings"
+        else:
+            return "Incorrect input enterred"
 
 
 #Class to store a set of saved information needed in the system
